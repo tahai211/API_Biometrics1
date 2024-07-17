@@ -1,0 +1,65 @@
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.exe
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.deps.json
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.runtimeconfig.json
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.pdb
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Data.SqlClient.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Drawing.Common.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Security.Permissions.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\System.Windows.Extensions.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.csproj.AssemblyReference.cache
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.AssemblyInfoInputs.cache
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.AssemblyInfo.cs
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.csproj.CoreCompileInputs.cache
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.csproj.CopyComplete
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\refint\MockUp_CardZ.dll
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.pdb
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.genruntimeconfig.cache
+C:\Users\This PC\Documents\MockUp_CardZ\MockUp_CardZ\obj\Debug\net7.0\ref\MockUp_CardZ.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.exe
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.deps.json
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.runtimeconfig.json
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\MockUp_CardZ.pdb
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Configuration.ConfigurationManager.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Data.SqlClient.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Drawing.Common.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Security.Cryptography.ProtectedData.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Security.Permissions.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\System.Windows.Extensions.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\Microsoft.Win32.SystemEvents.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-arm64\native\sni.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-x64\native\sni.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win-x86\native\sni.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\unix\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\netcoreapp2.1\System.Data.SqlClient.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Drawing.Common.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.ProtectedData.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Windows.Extensions.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.csproj.AssemblyReference.cache
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.GeneratedMSBuildEditorConfig.editorconfig
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.AssemblyInfoInputs.cache
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.AssemblyInfo.cs
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.csproj.CoreCompileInputs.cache
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.sourcelink.json
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_C.209CAF18.Up2Date
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\refint\MockUp_CardZ.dll
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.pdb
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\MockUp_CardZ.genruntimeconfig.cache
+D:\DA\BE\MockUp_CardZ-20240714T092802Z-001\API_Biometrics\MockUp_CardZ\obj\Debug\net7.0\ref\MockUp_CardZ.dll
