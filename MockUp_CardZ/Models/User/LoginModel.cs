@@ -4,13 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MockUp_CardZ.DTO.Entity
+namespace MockUp_CardZ.Models.User
 {
-    public class UserEntity
+    public class LoginModel
     {
-        public Guid Id { get; set; }
-        public string UserName { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
-        // Các thuộc tính khác
+        public string Domain { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace MockUp_CardZ.Service.User
         /// <param name="passWord"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        Task<UserEntity> Authentication(string userName, string passWord, string dbName);
+        Task<DTO.Entity.User> Authentication(string userName, string passWord);
         /// <summary>
         /// cập nhật user
         /// </summary>
