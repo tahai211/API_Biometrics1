@@ -20,8 +20,8 @@ namespace MockUp_CardZ.Service.User
         public async Task<DTO.Entity.User> Authentication(string userName, string passWord)
         {
             // Logic đăng nhập
-            var user = await _context.Users
-                .FirstOrDefaultAsync(u => u.UserName == userName && u.Password == passWord);
+            //var user = await _context.Users
+            //    .FirstOrDefaultAsync(u => u.UserName == userName && u.Password == passWord);
 
             return new DTO.Entity.User();
         }

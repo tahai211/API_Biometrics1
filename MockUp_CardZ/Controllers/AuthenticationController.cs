@@ -2,16 +2,16 @@
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using MockUp_CardZ.DTO.Entity;
+using MockUp_CardZ.Infra.Common;
+using MockUp_CardZ.Infra.Common.HttpCustom;
 using MockUp_CardZ.Models.User;
 using MockUp_CardZ.Service.User;
-using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
+using Microsoft.IdentityModel.JsonWebTokens;
+
 
 namespace MockUp_CardZ.Controllers
 {
@@ -57,20 +57,20 @@ namespace MockUp_CardZ.Controllers
                 var authenticationModel = new AuthenticationModel();
                 HttpResponseExtensions httpResponseExtensions = null;
                 var user = await _userService.Authentication(model.Username, model.Password);
-                if (user.IsActivated == true)
+                if (user.Status == "A")
                 {
                     //RefreshTokenEntity refreshToken = GenerateRefreshToken();
                     //refreshToken.UserId = user.UserId ?? 0;
                     //var json = JsonConvert.SerializeObject(refreshToken);
                     //XmlNode xmlNode = JsonConvert.DeserializeXmlNode(json, "XMLData");
                     //await _userService.AddRefreshToken(xmlNode.InnerXml, user.UserId, model.Domain);
-                    user.DbName = customerResult.DbName;
+                    //user.DbName = customerResult.DbName;
                     JwtSecurityToken jwtSecurityToken = CreateJwtToken(user);
-                    authenticationModel.Id = user.Id;
-                    authenticationModel.UserName = user.UserName;
-                    authenticationModel.Name = user.Name;
+                    authenticationModel.Id = user.UserId;
+                    authenticationModel.UserName = user.FullName;
+                    authenticationModel.Name = user.FirstName;
                     //authenticationModel.Avatar = user.ImageLink;
-                    authenticationModel.RoleId = user.RoleId;
+                    authenticationModel.RoleId = 2;
                     //authenticationModel.PotentialId = user.PotentialId;
                     authenticationModel.Token = new JwtSecurityTokenHandler().WriteToken(jwtSecurityToken);
                     //authenticationModel.RefreshToken = refreshToken.RefreshToken;
@@ -100,16 +100,16 @@ namespace MockUp_CardZ.Controllers
         {
             //var isRedisServer = bool.Parse(Configuration["AppSettings:IsRedisServer"]);
             var roleClaims = new List<Claim>();
-            roleClaims.Add(new Claim("Roles", user.RoleId.ToString()));
+            roleClaims.Add(new Claim("Roles", user.PolicyId.ToString()));
             var claims = new[]
             {
-                new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                new Claim(JwtRegisteredClaimNames.Jti, user.Id.ToString()),
-                new Claim(JwtRegisteredClaimNames.Email, String.IsNullOrEmpty(user.Email) ? "": user.Email),
-                new Claim(JwtRegisteredClaimNames.FamilyName, String.IsNullOrEmpty(user.DbName) ? "": user.DbName),
-                new Claim("Name", user.Name ?? user.Name),
-                new Claim("DbName", String.IsNullOrEmpty(user.DbName) ? "": user.DbName),
-                new Claim("Uid", user.Id.ToString())
+                //new Claim(JwtRegisteredClaimNames.Sub, user.FullName),
+                //new Claim(JwtRegisteredClaimNames.Jti, user.UserId.ToString()),
+                //new Claim(JwtRegisteredClaimNames.Email, String.IsNullOrEmpty(user.Email) ? "": user.Email),
+                //new Claim(JwtRegisteredClaimNames.FamilyName, String.IsNullOrEmpty(user.DbName) ? "": user.DbName),
+                new Claim("Name", user.FullName ?? user.FullName),
+                //new Claim("DbName", String.IsNullOrEmpty(user.DbName) ? "": user.DbName),
+                new Claim("Uid", user.UserId.ToString())
             }
             .Union(roleClaims);
 

@@ -8,6 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTO\NewFolder\**" />
+    <Compile Remove="Infra\Entities\**" />
+    <Compile Remove="Infra\Helps\**" />
+    <Compile Remove="Infra\Migrations\**" />
+    <EmbeddedResource Remove="DTO\NewFolder\**" />
+    <EmbeddedResource Remove="Infra\Entities\**" />
+    <EmbeddedResource Remove="Infra\Helps\**" />
+    <EmbeddedResource Remove="Infra\Migrations\**" />
+    <None Remove="DTO\NewFolder\**" />
+    <None Remove="Infra\Entities\**" />
+    <None Remove="Infra\Helps\**" />
+    <None Remove="Infra\Migrations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.2.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
@@ -15,16 +30,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.0" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.0.0" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DTO\NewFolder\" />
     <Folder Include="logs\" />
-    <Folder Include="Infra\Helps\" />
-    <Folder Include="Infra\Entities\" />
-    <Folder Include="Infra\Migrations\" />
   </ItemGroup>
 
 </Project>

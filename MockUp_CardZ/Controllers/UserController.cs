@@ -23,7 +23,7 @@ namespace MockUp_CardZ.Controllers
         [HttpPost("authenticate")]
         public async Task<IActionResult> Authenticate(string userName, string passWord, string dbName)
         {
-            var user = await _userService.Authentication(userName, passWord, dbName);
+            var user = await _userService.Authentication(userName, passWord);
             if (user == null) return Unauthorized();
 
             return Ok(user);

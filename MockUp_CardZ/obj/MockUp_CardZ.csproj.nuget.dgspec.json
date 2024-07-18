@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\do_an\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj": {}
+    "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj": {}
   },
   "projects": {
-    "E:\\do_an\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj": {
+    "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\do_an\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj",
+        "projectUniqueName": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj",
         "projectName": "MockUp_CardZ",
-        "projectPath": "E:\\do_an\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj",
-        "packagesPath": "C:\\Users\\This PC\\.nuget\\packages\\",
-        "outputPath": "E:\\do_an\\API_Biometrics1\\MockUp_CardZ\\obj\\",
+        "projectPath": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\MockUp_CardZ.csproj",
+        "packagesPath": "C:\\Users\\hai\\.nuget\\packages\\",
+        "outputPath": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\This PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\hai\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,6 +35,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -59,6 +60,10 @@
               "target": "Package",
               "version": "[8.0.7, )"
             },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[13.0.3, )"
+            },
             "System.Configuration.ConfigurationManager": {
               "target": "Package",
               "version": "[8.0.0, )"
@@ -66,6 +71,10 @@
             "System.Data.SqlClient": {
               "target": "Package",
               "version": "[4.8.6, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -87,7 +96,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
