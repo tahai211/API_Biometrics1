@@ -7,11 +7,11 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
-    public class UserLogin
+    public class ApiEncryptionType
     {
         [Key]
-        public string UserId { get; set; }
-        public string LoginId { get; set; }
-        public string Status { get; set; }
+        public string EncryptId { get; set; }
+        public string EncryptName { get; set; }
+        public string ParamData { get; set; }
     }
 }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace MockUp_CardZ.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("user")]
     public class UsersController : ControllerBase
     {
         private readonly UserService _userService;
@@ -20,13 +20,37 @@ namespace MockUp_CardZ.Controllers
             _userService = userService;
         }
 
-        [HttpPost("authenticate")]
-        public async Task<IActionResult> Authenticate(string userName, string passWord, string dbName)
+        [HttpPost("list")]
+        public async Task<IActionResult> GetListUserManagement(string userName, string passWord, string dbName)
         {
-            var user = await _userService.Authentication(userName, passWord);
-            if (user == null) return Unauthorized();
+            //var user = await _userService.Authentication(userName, passWord);
+            //if (user == null) return Unauthorized();
 
-            return Ok(user);
+            return Ok();
+        }
+        [HttpPost("view")]
+        public async Task<IActionResult> GetDetailUserManagement(string userName, string passWord, string dbName)
+        {
+            //var user = await _userService.Authentication(userName, passWord);
+            //if (user == null) return Unauthorized();
+
+            return Ok();
+        }
+        [HttpPost("edit")]
+        public async Task<IActionResult> EditUserManagement(string userName, string passWord, string dbName)
+        {
+            //var user = await _userService.Authentication(userName, passWord);
+            //if (user == null) return Unauthorized();
+
+            return Ok();
+        }
+        [HttpPost("Delete")]
+        public async Task<IActionResult> DeleteUserManagement(string userName, string passWord, string dbName)
+        {
+            //var user = await _userService.Authentication(userName, passWord);
+            //if (user == null) return Unauthorized();
+
+            return Ok();
         }
     }
 }

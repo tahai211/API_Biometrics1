@@ -190,7 +190,7 @@ namespace MockUp_CardZ.Infra.Common
         }
     }
 
-    public static class Encryption
+    public class Encryption
     {
         #region RSA
         public static string RSAEncrypt(string Data, RSAParameters RSAKey, bool DoOAEPPadding = false)

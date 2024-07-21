@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.Infra.Constans
 {
-    internal class StaticVariable
+    public class StaticVariable
     {
+        public const int ExpiresToken = 24;//Hours
+        public const int ExpiresTokenRefresh = 10;//days
     }
 }

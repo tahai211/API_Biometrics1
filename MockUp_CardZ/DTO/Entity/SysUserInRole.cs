@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
-    public class UserInRole
+    public class SysUserInRole
     {
         [Key]
         public string UserId { get; set; }

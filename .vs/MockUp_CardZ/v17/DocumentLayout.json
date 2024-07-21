@@ -1,0 +1,177 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\DA\\BE\\API_Biometrics1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\controllers\\biometriccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\controllers\\biometriccontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\service\\role\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\service\\role\\roleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\dto\\entity\\sysrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\dto\\entity\\sysrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\dto\\entity\\sysservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\dto\\entity\\sysservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\service\\role\\iroleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\service\\role\\iroleservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\controllers\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\controllers\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\controllers\\portalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\controllers\\portalcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\controllers\\policycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\controllers\\policycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|d:\\da\\be\\api_biometrics1\\mockup_cardz\\service\\policy\\ipolicyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{15175AE1-A64E-44A8-8649-B70DDF7D82A8}|MockUp_CardZ\\MockUp_CardZ.csproj|solutionrelative:mockup_cardz\\service\\policy\\ipolicyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "BiometricController.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\BiometricController.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Controllers\\BiometricController.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\BiometricController.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Controllers\\BiometricController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T10:17:09.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "SysService.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\DTO\\Entity\\SysService.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\DTO\\Entity\\SysService.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\DTO\\Entity\\SysService.cs",
+              "RelativeToolTip": "MockUp_CardZ\\DTO\\Entity\\SysService.cs",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABAAAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T10:08:41.213Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SysRole.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\DTO\\Entity\\SysRole.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\DTO\\Entity\\SysRole.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\DTO\\Entity\\SysRole.cs",
+              "RelativeToolTip": "MockUp_CardZ\\DTO\\Entity\\SysRole.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAAAA8AAAAtAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T10:08:34.207Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "RoleService.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Role\\RoleService.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Service\\Role\\RoleService.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Role\\RoleService.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Service\\Role\\RoleService.cs",
+              "ViewState": "AQIAADMAAAAAAAAAAAAYwEEAAAAmAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T09:50:25.529Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "IRoleService.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Role\\IRoleService.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Service\\Role\\IRoleService.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Role\\IRoleService.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Service\\Role\\IRoleService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T09:46:00.274Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "RoleController.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\RoleController.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Controllers\\RoleController.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\RoleController.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Controllers\\RoleController.cs",
+              "ViewState": "AQIAADgAAAAAAAAAAAAgwEwAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T09:38:51.181Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "PortalController.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\PortalController.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Controllers\\PortalController.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\PortalController.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Controllers\\PortalController.cs",
+              "ViewState": "AQIAABYAAAAAAAAAAAAQwCYAAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T09:11:39.98Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IPolicyService.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Policy\\IPolicyService.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Service\\Policy\\IPolicyService.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Service\\Policy\\IPolicyService.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Service\\Policy\\IPolicyService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAxAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T04:59:50.842Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "PolicyController.cs",
+              "DocumentMoniker": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\PolicyController.cs",
+              "RelativeDocumentMoniker": "MockUp_CardZ\\Controllers\\PolicyController.cs",
+              "ToolTip": "D:\\DA\\BE\\API_Biometrics1\\MockUp_CardZ\\Controllers\\PolicyController.cs",
+              "RelativeToolTip": "MockUp_CardZ\\Controllers\\PolicyController.cs",
+              "ViewState": "AQIAAA4AAAAAAAAAAAAAABwAAABFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T04:52:33.81Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

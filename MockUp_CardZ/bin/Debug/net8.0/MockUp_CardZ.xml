@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MockUp_CardZ</name>
+    </assembly>
+    <members>
+        <member name="M:MockUp_CardZ.Controllers.AuthenticationController.Login(MockUp_CardZ.Models.User.LoginModel)">
+             <summary>
+             Đăng nhập
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 {
+                    "username": "admin",
+                    "password":"123456"
+                 }
+            
+             </remarks>
+             <param name="model"></param>
+             <returns>Tài khoản người dùng</returns>
+             <response code="200">Đăng nhập thành công</response>
+             <response code="404">Không tìm thấy tài khoản</response>
+             <response code="400">Đăng nhập thất bại</response> 
+        </member>
+        <member name="M:MockUp_CardZ.Infra.Common.EE2E.ServerDecrypt(System.String,System.String)">
+            <summary>
+            Simple 20230518 End to End server decrypt message
+            </summary>
+            <param name="data">Original data send from client</param>
+            <param name="privateKey">The private that stored on the server side</param>
+            <returns>Item1: decrypted request, Item2: content type, Item3: Client RSA key</returns>
+        </member>
+        <member name="M:MockUp_CardZ.Infra.Common.EE2E.ServerEncrypt(System.String,System.String,System.String)">
+            <summary>
+            Simple 20230518 End to End server encrypt message
+            </summary>
+            <param name="sinput">the response message will be transfer to client</param>
+            <param name="contentType">http content type</param>
+            <param name="publicKey">the public key that received from client</param>
+            <returns></returns>
+        </member>
+        <member name="M:MockUp_CardZ.Infra.Common.SecurityLinkFileCommon.EncryptURL(System.String)">
+            
+             plaintext =  id document  + token (client)
+        </member>
+        <member name="M:MockUp_CardZ.Service.User.IUserService.Authentication(System.String,System.String,System.String)">
+            <summary>
+            Đăng nhập
+            </summary>
+            <param name="userName"></param>
+            <param name="passWord"></param>
+            <param name="dbName"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

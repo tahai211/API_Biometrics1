@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
-    public class LoginInfo
+    public class SysLoginInfo
     {
         [Key]
         public string LoginId { get; set; }
+        [Key]
         public string ServiceId { get; set; }
         public string LoginName { get; set; }
         public string LoginType { get; set; }

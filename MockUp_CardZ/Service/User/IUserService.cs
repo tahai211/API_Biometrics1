@@ -1,4 +1,5 @@
 ﻿using MockUp_CardZ.DTO.Entity;
+using MockUp_CardZ.DTO.ResponseDTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,34 +17,11 @@ namespace MockUp_CardZ.Service.User
         /// <param name="passWord"></param>
         /// <param name="dbName"></param>
         /// <returns></returns>
-        Task<DTO.Entity.User> Authentication(string userName, string passWord);
-        /// <summary>
-        /// cập nhật user
-        /// </summary>
-        /// <param name = "stringXml" ></ param >
-        /// < param name="userId"></param>
-        /// <param name = "dbName" ></ param >
-        /// < returns ></ returns >
-        //Task<UserEntity> SaveUser(string stringXml, BasicParamType param);
-        /// <summary>
-        /// Lấy user theo Id
-        /// </summary>
-        /// <param name = "userId" ></ param >
-        /// < param name="dbName"></param>
-        /// <returns></returns>
-        //Task<UserEntity> GetUserById(Guid userId, BasicParamType param);
-        /// <summary>
-        /// Xóa người dùng
-        /// </summary>
-        /// <param name = "userId" ></ param >
-        /// < param name="dbName"></param>
-        /// <returns></returns>
-        //Task<int> Delete(Guid userId, BasicParamType param);
-        /// <summary>
-        /// Lấy danh sách user
-        /// </summary>
-        /// <param name = "param" ></ param >
-        /// < returns ></ returns >
-        //Task < List < UserEntity >> GetListUser(BasicParamType param);
+        ValueTask<LoginResponseDTO> Authentication(string userName, string passWord, string serviceId);
+        ValueTask<object> AddRefreshToken(RefreshTokenEntity refreshToken, string userId, string serviceId);
+        ValueTask<object> UpdateRefreshToken(RefreshTokenEntity refreshToken, string userId, string serviceId);
+        ValueTask<RefreshTokenEntity> GetRefreshToken(string token, string userId, string serviceId);
+        ValueTask<SysUser> GetUserById( string userId);
+
     }
 }

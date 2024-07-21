@@ -7,14 +7,13 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
-    public class Role
+    public class SysRole
     {
         [Key]
         public int RoleId { get; set; }
         public string RoleName { get; set; }
         public string Description { get; set; }
         public string ServiceId { get; set; }
-        public string CtmType { get; set; }
         public string UserType { get; set; }
         public string RoleType { get; set; }
         public bool? Active { get; set; }

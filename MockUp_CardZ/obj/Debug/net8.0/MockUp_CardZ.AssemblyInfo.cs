@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MockUp_CardZ")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+15a909aca46a112f140cae53011460359b35bf59")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+45aaed2cf66fce28e6787f6e9f36b1ab1db88dd8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MockUp_CardZ")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MockUp_CardZ")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
