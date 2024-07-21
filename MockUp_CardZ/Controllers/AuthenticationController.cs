@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Authorization;
+using MockUp_CardZ.Infra.Attributes;
 
 
 namespace MockUp_CardZ.Controllers
@@ -57,7 +58,7 @@ namespace MockUp_CardZ.Controllers
         /// <response code="404">Không tìm thấy tài khoản</response>
         /// <response code="400">Đăng nhập thất bại</response> 
         [HttpPost("login")]
-        [AllowAnonymous]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
             try
@@ -95,7 +96,7 @@ namespace MockUp_CardZ.Controllers
         }
 
         [HttpPost("refreshtoken")]
-        [AllowAnonymous]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<ActionResult<LoginResponseDTO>> RefreshToken([FromBody] RefreshRequestModel refreshRequest)
         {
             var userInfo = await GetUserFromAccessToken(refreshRequest.AccessToken);
@@ -128,7 +129,7 @@ namespace MockUp_CardZ.Controllers
             return NotFound(httpResponseExtensions);
         }
         [HttpPost("revoketoken")]
-        [Authorize]
+        [Check(checkRole: false, checkToken: true)]
         public async Task<IActionResult> RevokeToken([FromBody] RevokeTokenRequest model)
         {
             HttpBase responeResult = null;

@@ -20,7 +20,7 @@ namespace MockUp_CardZ.Data
         public DbSet<SysUserInRole> SysUserInRoles { get; set; }
         public DbSet<SysUserLogin> SysUserLogins { get; set; }
         public DbSet<SysPolicy> SysPolicies { get; set; }
-        public DbSet<SysService> SysService { get; set; }
+        public DbSet<SysService> SysServices { get; set; }
         public DbSet<SysLoginHistory> SysLoginHistories { get; set; }
         public DbSet<SysUserAccessToken> SysUserAccessTokens { get; set; }
 

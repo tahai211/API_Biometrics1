@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MockUp_CardZ.Infra.Attributes;
 using MockUp_CardZ.Infra.Common.HttpCustom;
 using MockUp_CardZ.Service.Policy;
 using MockUp_CardZ.Service.Portal;
@@ -22,7 +23,8 @@ namespace MockUp_CardZ.Controllers
         }
 
         [HttpPost("list")]
-        public async Task<IActionResult> GetListPolicyManagement(string accessGroupId, string desc, string isCms, int pageIndex = 1, int pageSize = 0)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> GetListPolicyManagement(string? accessGroupId, string? desc, string? isCms, int pageIndex = 1, int pageSize = 0)
         {
             try
             {
@@ -38,6 +40,7 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("view")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> GetDetailPolicyManagement(int policyId)
         {
             try
@@ -54,8 +57,9 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> EditPolicyManagement(int policyId, string description, string efFrom, string efTo, string ctmTypeId, string accessGroupId, int pwHis,
-    int pwAge, int pwMinLength, int pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> EditPolicyManagement(int? policyId, string? description, string? efFrom, string? efTo, string? ctmTypeId, string? accessGroupId, int? pwHis,
+    int? pwAge, int? pwMinLength, int? pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
     string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType, string userId)
         {
             try
@@ -74,8 +78,9 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("add")]
-        public async Task<IActionResult> AddPolicyManagement(int policyId, string description, string efFrom, string efTo, string ctmTypeId, string accessGroupId, int pwHis,
-    int pwAge, int pwMinLength, int pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> AddPolicyManagement(int? policyId, string? description, string? efFrom, string? efTo, string? ctmTypeId, string? accessGroupId, int? pwHis,
+    int? pwAge, int? pwMinLength, int? pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
     string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType, string userId)
         {
             try
@@ -94,6 +99,7 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("Delete")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> DeletePolicyManagement(dynamic ids)
         {
             try

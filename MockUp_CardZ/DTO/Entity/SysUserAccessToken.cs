@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
+    [Table("Sys_UserAccessToken")]
     public class SysUserAccessToken
     {
         public decimal Id { get; set; } // ID duy nhất của token

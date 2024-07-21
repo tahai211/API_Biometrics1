@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace MockUp_CardZ.DTO.Entity
 {
+    [Table("Sys_Service")]
     public class SysService
     {
         [Key]

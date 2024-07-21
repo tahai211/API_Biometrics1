@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using MockUp_CardZ.Infra.Attributes;
 using MockUp_CardZ.Infra.Common.HttpCustom;
 using MockUp_CardZ.Models.User;
 using MockUp_CardZ.Service.Portal;
@@ -24,7 +25,8 @@ namespace MockUp_CardZ.Controllers
         }
 
         [HttpPost("list")]
-        public async Task<IActionResult> GetListPortalManagement(string portalName, string portaiId, string status, int pageSize = 0, int pageIndex = 1)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> GetListPortalManagement(string? portalName, string? portaiId, string? status, int pageSize = 0, int pageIndex = 1)
         {
             try
             {
@@ -39,6 +41,7 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("view")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> GetDetailPortalManagement(string serviceId)
         {
             try
@@ -55,7 +58,8 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("add")]
-        public async Task<IActionResult> AddPortalManagement(string serviceId, string serviceName, string status, string customerChannel, int checkUserAction, int timeRevokeToken, int timeShowCountDown)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> AddPortalManagement(string? serviceId, string? serviceName, string? status, string? customerChannel, int checkUserAction, int timeRevokeToken, int timeShowCountDown)
         {
             try
             {
@@ -71,7 +75,8 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> EditPortalManagement(string serviceId, string serviceName, string status, string customerChannel, int checkUserAction, int timeRevokeToken, int timeShowCountDown)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> EditPortalManagement(string? serviceId, string? serviceName, string? status, string? customerChannel, int checkUserAction, int timeRevokeToken, int timeShowCountDown)
         {
             try
             {
@@ -88,6 +93,7 @@ namespace MockUp_CardZ.Controllers
 
         }
         [HttpPost("Delete")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> DeletePortalManagement(dynamic serviceId)
         {
             try

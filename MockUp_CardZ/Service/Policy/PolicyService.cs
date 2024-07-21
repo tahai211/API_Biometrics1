@@ -19,9 +19,9 @@ namespace MockUp_CardZ.Service.Policy
         {
             _context = context;
         }
-        public async ValueTask<object> GetListPolicyManagement( string accessGroupId, string desc, string isCms, int pageIndex = 1, int pageSize = 0)
+        public async ValueTask<object> GetListPolicyManagement(string? accessGroupId, string? desc, string? isCms, int pageIndex = 1, int pageSize = 0)
         {
-            var services = await _context.SysService.ToListAsync();
+            var services = await _context.SysServices.ToListAsync();
             var policies = _context.SysPolicies.GroupBy(y => new { y.PolicyId, y.Description, y.EfFrom, y.EfTo, y.ServiceId })
             .Select(y => new { AccessGroupId = y.Key.ServiceId, PolicyId = y.Key.PolicyId, Description = y.Key.Description, EfFrom = y.Key.EfFrom, EfTo = y.Key.EfTo });
             var pls = await _context.SysPolicies.Where(x => x.Description.Contains(desc)
@@ -89,9 +89,9 @@ namespace MockUp_CardZ.Service.Policy
             }).FirstOrDefaultAsync();
             return detail;
         }
-        public async ValueTask<object> UpdatePolicyManagement(int policyId, string description, string efFrom, string efTo, string ctmTypeId, string accessGroupId, int pwHis,
-    int pwAge, int pwMinLength, int pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
-    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType,string userId)
+        public async ValueTask<object> UpdatePolicyManagement(int? policyId, string? description, string? efFrom, string? efTo, string? ctmTypeId, string? accessGroupId, int? pwHis,
+    int? pwAge, int? pwMinLength, int? pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
+    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType, string userId)
         {
             if (!actionType.Equals("ADD") && !actionType.Equals("EDIT"))
                 throw new SysException("page_action_invalid", "Invalid action");

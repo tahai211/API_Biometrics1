@@ -29,7 +29,11 @@ namespace MockUp_CardZ.Service.User
             {
 
             }
-            var service = await _context.SysService.Where(x => x.ServiceId == serviceId).FirstOrDefaultAsync();
+            var service = await _context.SysServices.Where(x => x.ServiceId == serviceId).FirstOrDefaultAsync();
+            if(service == null)
+            {
+                throw new SysException("serviceisnull", "Service is null");
+            }
             var timeCheckUserAtion = service.CheckUserAction;
             var timeRevokeToken = service.TimeRevokeToken;
             var timeShowCountDown = service.TimeShowCountDown;
@@ -382,13 +386,27 @@ namespace MockUp_CardZ.Service.User
 
         public async ValueTask<RefreshTokenEntity> GetRefreshToken(string token, string userId, string serviceId)
         {
-
+            SysUserAccessToken tokenInfo = await _context.SysUserAccessTokens.Where(x => x.UserId == userId && x.Token == token 
+            && x.Service == serviceId && x.Status == "A").FirstOrDefaultAsync();
+            RefreshTokenEntity refreshToke = new RefreshTokenEntity();
+            refreshToke.RefreshToken = tokenInfo.Token;
+            refreshToke.UserId = tokenInfo.UserId;
+            refreshToke.ExpiryDate = DateTime.Now;
             return new RefreshTokenEntity();
         }
 
         public async ValueTask<SysUser> GetUserById(string userId)
         {
-            return new SysUser();
+            SysUser userInfo = await _context.SysUsers.Where(x => x.UserId == userId).FirstOrDefaultAsync();
+            if(userInfo == null)
+            {
+                throw new SysException("userisnot", "");
+            }
+            return userInfo;
+        }
+        public async ValueTask<object> GetLoginHistory(string userId)
+        {
+            return true;
         }
 
     }

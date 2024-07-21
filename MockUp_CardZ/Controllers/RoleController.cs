@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MockUp_CardZ.Infra.Attributes;
 using MockUp_CardZ.Infra.Common.HttpCustom;
 using MockUp_CardZ.Service.Portal;
 using MockUp_CardZ.Service.Role;
@@ -23,7 +24,8 @@ namespace MockUp_CardZ.Controllers
         }
 
         [HttpPost("list")]
-        public async Task<IActionResult> GetListRoleManagement(string roleName, string usertype, string serviceId, int pageIndex = 0, int pageSize = 15)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> GetListRoleManagement(string? roleName, string? usertype, string? serviceId, int pageIndex = 0, int pageSize = 15)
         {
             try
             {
@@ -39,6 +41,7 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("view")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> GetDetailRoleManagement(int roleId)
         {
             try
@@ -55,7 +58,8 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("add")]
-        public async Task<IActionResult> AddRoleManagement(int roleId, string roleName, string serviceId, string desc, string usertype, string userId, string actionType)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> AddRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId, string? actionType)
         {
             try
             {
@@ -71,7 +75,8 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("edit")]
-        public async Task<IActionResult> EditRoleManagement(int roleId, string roleName, string serviceId, string desc, string usertype, string userId, string actionType)
+        [Check(checkRole: false, checkToken: false)]
+        public async Task<IActionResult> EditRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId, string? actionType)
         {
             try
             {
@@ -87,6 +92,7 @@ namespace MockUp_CardZ.Controllers
             }
         }
         [HttpPost("Delete")]
+        [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> DeleteRoleManagement(dynamic role)
         {
             try

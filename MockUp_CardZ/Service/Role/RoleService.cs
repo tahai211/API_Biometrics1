@@ -19,7 +19,7 @@ namespace MockUp_CardZ.Service.Role
         {
             _context = context;
         }
-        public async ValueTask<object> GetListRoleManagement(string roleName, string usertype, string serviceId, int pageIndex = 0, int pageSize = 15)
+        public async ValueTask<object> GetListRoleManagement(string? roleName, string? usertype, string? serviceId, int pageIndex = 0, int pageSize = 15)
         {
             int skip = ((pageIndex - 1) * pageSize);
 
@@ -30,7 +30,7 @@ namespace MockUp_CardZ.Service.Role
                 {
                     RoleId = x.RoleId,
                     RoleName = x.RoleName,
-                    Service = _context.SysService.Any(a => a.ServiceId == x.ServiceId) ? _context.SysService.Where(a => a.ServiceId == x.ServiceId).FirstOrDefault().ServiceName : "",
+                    Service = _context.SysServices.Any(a => a.ServiceId == x.ServiceId) ? _context.SysServices.Where(a => a.ServiceId == x.ServiceId).FirstOrDefault().ServiceName : "",
                     //UserType = Sẻ.IdpUserTypes.Any(a => a.UserTypeId == x.UserType) ? digitalContext.IdpUserTypes.Where(a => a.UserTypeId == x.UserType).FirstOrDefault().UserTypeName : x.ServiceId == "BO" ? "USER" : "",
                     RoleType = x.RoleType,
                     Active = x.Active,
@@ -58,7 +58,7 @@ namespace MockUp_CardZ.Service.Role
                 RoleName = m.RoleName,
                 Description = m.Description,
                 ServiceId = m.ServiceId,
-                CChannel = _context.SysService.AsQueryable().Where(x => x.ServiceId == m.ServiceId).SingleOrDefault().CustomerChannel,
+                CChannel = _context.SysServices.AsQueryable().Where(x => x.ServiceId == m.ServiceId).SingleOrDefault().CustomerChannel,
                 // Service = digitalContext.IdpServices.AsQueryable().Select(x => new { ServiceId = x.ServiceId, ServiceName = x.ServiceName }).SingleOrDefault(x => x.ServiceId == m.ServiceId),
                 // // UserType = digitalContext.IdpUserTypes.AsQueryable().Select(x=>new{ServiceId = x.ServiceId,UserTypeId=x.UserTypeId,UserTypeName=x.UserTypeName})
                 // //     .SingleOrDefault(x=>x.ServiceId==m.ServiceId && x.UserTypeId==m.UserType),
@@ -68,7 +68,7 @@ namespace MockUp_CardZ.Service.Role
             }).FirstOrDefaultAsync();
             return role;
         }
-        public async ValueTask<object> UpdateRoleManagement(int roleId, string roleName, string serviceId, string desc, string usertype, string userId,string actionType)
+        public async ValueTask<object> UpdateRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId, string? actionType)
         {
             if (!actionType.Equals("ADD") && !actionType.Equals("EDIT"))
                 throw new SysException("page_action_invalid", "Invalid action");

@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using MockUp_CardZ.Data;
+using MockUp_CardZ.Infra.Middleware;
 using MockUp_CardZ.Models.User;
 using MockUp_CardZ.Service.Biomertric;
 using MockUp_CardZ.Service.Policy;
@@ -150,6 +151,8 @@ namespace MockUp_CardZ
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "MockUp_CardZ V1");
             });
+
+            app.UseMiddleware<RoleCheckMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {

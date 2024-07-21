@@ -19,13 +19,13 @@ namespace MockUp_CardZ.Service.Portal
         {
             _context = context;
         }
-        public async ValueTask<object> GetListPortalManagement(string portalName, string portaiId,string status, int pageSize = 0, int pageIndex = 1)
+        public async ValueTask<object> GetListPortalManagement(string? portalName, string? portaiId, string? status, int pageSize = 0, int pageIndex = 1)
         {
             bool? _status = String.IsNullOrEmpty(status) ? null : (status.Equals("1") ? true : false);
 
             int skip = ((pageIndex - 1) * pageSize);
 
-            var lst = _context.SysService
+            var lst = _context.SysServices
                    .Where(x => (portaiId == null || x.ServiceId.Contains(portaiId))
                                && (portalName == null || x.ServiceName.Contains(portalName))
                                && (_status == null || x.Status == _status)
@@ -45,18 +45,18 @@ namespace MockUp_CardZ.Service.Portal
         }
         public async ValueTask<object> GetDetailPortalManagement( string serviceId)
         {
-            var obj = await _context.SysService.Where(x => x.ServiceId.Equals(serviceId)).FirstOrDefaultAsync();
+            var obj = await _context.SysServices.Where(x => x.ServiceId.Equals(serviceId)).FirstOrDefaultAsync();
             if (obj == null) return new SysException("serviceIdisnotexist", "Service ID is not exist");
             return obj;
         }
-        public async ValueTask<object> UpdatePortalManagement(string serviceId, string serviceName, string status, string customerChannel,int checkUserAction,int timeRevokeToken,int timeShowCountDown, string actionType)
+        public async ValueTask<object> UpdatePortalManagement(string? serviceId, string? serviceName, string? status, string? customerChannel, int checkUserAction, int timeRevokeToken, int timeShowCountDown, string actionType)
         {
             if (!actionType.Equals("ADD") && !actionType.Equals("EDIT"))
             {
                 throw new SysException("page_action_invalid", "Invalid action");
             }
 
-            var serviceInfo = await _context.SysService.Where(x => x.ServiceId.Equals(serviceId)).FirstOrDefaultAsync();
+            var serviceInfo = await _context.SysServices.Where(x => x.ServiceId.Equals(serviceId)).FirstOrDefaultAsync();
             if (actionType.Equals("ADD"))
             {
                 if (serviceInfo != null)
@@ -79,10 +79,11 @@ namespace MockUp_CardZ.Service.Portal
             serviceInfo.CheckUserAction = checkUserAction;
             serviceInfo.TimeRevokeToken = timeRevokeToken;
             serviceInfo.TimeShowCountDown = timeShowCountDown;
+            serviceInfo.CompanyId = "";
 
             if (actionType.Equals("ADD"))
             {
-                _context.SysService.Add(serviceInfo);
+                _context.SysServices.Add(serviceInfo);
             }
             await _context.SaveChangesAsync();
             return true;
@@ -102,11 +103,11 @@ namespace MockUp_CardZ.Service.Portal
 
             foreach (var item in idArr)
             {
-                var record = _context.SysService.AsQueryable().SingleOrDefault(x => x.ServiceId.Equals(item.ToString()));
+                var record = _context.SysServices.AsQueryable().SingleOrDefault(x => x.ServiceId.Equals(item.ToString()));
 
                 if (record != null)
                 {
-                    _context.SysService.Remove(record);
+                    _context.SysServices.Remove(record);
                 }
             }
             await _context.SaveChangesAsync();
