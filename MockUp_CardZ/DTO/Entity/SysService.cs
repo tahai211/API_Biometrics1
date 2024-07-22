@@ -12,11 +12,11 @@ namespace MockUp_CardZ.DTO.Entity
     public class SysService
     {
         [Key]
-        public string ServiceId { get; set; }
-        public string ServiceName { get; set; }
+        public string? ServiceId { get; set; }
+        public string? ServiceName { get; set; }
         public bool? Status { get; set; }
-        public bool CustomerChannel { get; set; }
-        public string CompanyId { get; set; }
+        public bool? CustomerChannel { get; set; }
+        public string? CompanyId { get; set; }
         public int CheckUserAction { get; set; }
         public int TimeRevokeToken { get; set; }
         public int TimeShowCountDown { get; set; }

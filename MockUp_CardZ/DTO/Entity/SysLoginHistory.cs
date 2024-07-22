@@ -12,26 +12,26 @@ namespace MockUp_CardZ.DTO.Entity
     public class SysLoginHistory
     {
         [Key]
-        public int Id { get; set; }
+        public int? Id { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
 
         [Required]
-        public DateTime LoginTime { get; set; }
+        public DateTime? LoginTime { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string ServiceId { get; set; }
+        public string? ServiceId { get; set; }
 
         [StringLength(450)]
-        public string DeviceInfo { get; set; }
+        public string? DeviceInfo { get; set; }
 
         [StringLength(1000)]
-        public string IpAddress { get; set; }
+        public string? IpAddress { get; set; }
 
         [StringLength(1000)]
-        public string Location { get; set; }
+        public string? Location { get; set; }
     }
 }

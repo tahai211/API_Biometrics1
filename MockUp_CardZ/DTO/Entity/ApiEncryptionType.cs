@@ -12,8 +12,8 @@ namespace MockUp_CardZ.DTO.Entity
     public class ApiEncryptionType
     {
         [Key]
-        public string EncryptId { get; set; }
-        public string EncryptName { get; set; }
-        public string ParamData { get; set; }
+        public string? EncryptId { get; set; }
+        public string? EncryptName { get; set; }
+        public string? ParamData { get; set; }
     }
 }

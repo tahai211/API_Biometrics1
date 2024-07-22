@@ -12,7 +12,7 @@ namespace MockUp_CardZ.DTO.Entity
     public class SysUserInRole
     {
         [Key]
-        public string UserId { get; set; }
+        public string? UserId { get; set; }
         public int RoleId { get; set; }
     }
 }

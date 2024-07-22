@@ -12,8 +12,8 @@ namespace MockUp_CardZ.DTO.Entity
     public class SysUserLogin
     {
         [Key]
-        public string UserId { get; set; }
-        public string LoginId { get; set; }
-        public string Status { get; set; }
+        public string? UserId { get; set; }
+        public string? LoginId { get; set; }
+        public string? Status { get; set; }
     }
 }
