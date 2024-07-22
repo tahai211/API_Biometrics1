@@ -30,7 +30,7 @@ namespace MockUp_CardZ.Controllers
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
-                var lsiRole = await _roleService.GetListRoleManagement(roleName, usertype, serviceId, 0, 1);
+                var lsiRole = await _roleService.GetListRoleManagement(roleName, usertype, serviceId, pageIndex, pageSize);
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", lsiRole);
                 return Ok(httpResponseExtensions);
             }
@@ -59,12 +59,12 @@ namespace MockUp_CardZ.Controllers
         }
         [HttpPost("add")]
         [Check(checkRole: false, checkToken: false)]
-        public async Task<IActionResult> AddRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId, string? actionType)
+        public async Task<IActionResult> AddRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId)
         {
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
-                var addRole = await _roleService.UpdateRoleManagement(roleId, roleName, serviceId, desc, usertype, userId, actionType);
+                var addRole = await _roleService.UpdateRoleManagement(roleId, roleName, serviceId, desc, usertype, userId, "ADD");
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", addRole);
                 return Ok(httpResponseExtensions);
             }
@@ -76,12 +76,12 @@ namespace MockUp_CardZ.Controllers
         }
         [HttpPost("edit")]
         [Check(checkRole: false, checkToken: false)]
-        public async Task<IActionResult> EditRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId, string? actionType)
+        public async Task<IActionResult> EditRoleManagement(int? roleId, string? roleName, string? serviceId, string? desc, string? usertype, string? userId)
         {
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
-                var editRole = await _roleService.UpdateRoleManagement(roleId, roleName, serviceId, desc, usertype, userId, actionType);
+                var editRole = await _roleService.UpdateRoleManagement(roleId, roleName, serviceId, desc, usertype, userId, "EDIT");
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", editRole);
                 return Ok(httpResponseExtensions);
             }

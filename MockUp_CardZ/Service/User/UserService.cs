@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using Microsoft.IdentityModel.Tokens;
 using MockUp_CardZ.Data;
 using MockUp_CardZ.DTO.Entity;
@@ -6,8 +7,11 @@ using MockUp_CardZ.DTO.ResponseDTO;
 using MockUp_CardZ.Infra.Common;
 using MockUp_CardZ.Infra.Common.HttpCustom;
 using MockUp_CardZ.Infra.Constans;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -391,7 +395,7 @@ namespace MockUp_CardZ.Service.User
             RefreshTokenEntity refreshToke = new RefreshTokenEntity();
             refreshToke.RefreshToken = tokenInfo.Token;
             refreshToke.UserId = tokenInfo.UserId;
-            refreshToke.ExpiryDate = DateTime.Now;
+            refreshToke.ExpiryDate = tokenInfo.ExpiredDate;
             return new RefreshTokenEntity();
         }
 
@@ -404,9 +408,590 @@ namespace MockUp_CardZ.Service.User
             }
             return userInfo;
         }
-        public async ValueTask<object> GetLoginHistory(string userId)
+        public async ValueTask<object> GetListUser(string? serviceId, string? status, string? userName, string? name, string? branch, string? email, string? phoneNo, string? companyId, int pageIndex = 1, int pageSize = 0)
         {
+            
+            int skip = ((pageIndex - 1) * pageSize);
+            //HaiTX Sửa  loại bỏ service id trong kq để ra 1 dòng khi k truyền service Id 
+            var lstUsers = digitalContext.IdpUsers.AsQueryable()
+        .Where(x => (string.IsNullOrEmpty(status) || x.Status == status) && (x.Status != "D") && (string.IsNullOrEmpty(branch) || x.BranchCode == branch))
+        .Join(
+            digitalContext.IdpUserLogins.AsQueryable()
+            .Join(
+                digitalContext.IdpLoginInfos.AsQueryable().Where(userlogin => (string.IsNullOrEmpty(serviceId) || userlogin.ServiceId == serviceId) && userlogin.Status != "D"),
+                userlogin => userlogin.LoginId,
+                login => login.LoginId,
+                (userlogin, login) => new { userlogin.UserId, login.LoginName, login.ServiceId }
+            ),
+            a => a.UserId,
+            b => b.UserId,
+            (a, b) => new
+            {
+                UserId = a.UserId,
+                UserName = b.LoginName,
+                BranchCode = a.BranchCode,
+                BranchName = digitalContext.IdpBranches.AsQueryable().Any(code => code.BranchCode == a.BranchCode) ?
+                digitalContext.IdpBranches.AsQueryable().Where(code => code.BranchCode == a.BranchCode).FirstOrDefault().BranchName : a.BranchCode,
+                Email = a.Email,
+                Portal = string.IsNullOrEmpty(serviceId) ? "" : (digitalContext.IdpServices.AsQueryable().Any(code => code.ServiceId == b.ServiceId) ?
+                digitalContext.IdpServices.AsQueryable().Where(code => code.ServiceId == b.ServiceId).FirstOrDefault().ServiceName : b.ServiceId),
+                PhoneNo = a.PhoneNo,
+                FirstName = a.FirstName,
+                MiddleName = a.MiddleName,
+                LastName = a.LastName,
+                FullName = a.FullName,
+                Status = a.Status,
+                CompanyId = a.CompanyId,
+                date = a.DateCreated, // Convert DateCreated to the desired format
+                DateCreated = "",
+                StatusStr = digitalContext.IdpCodes.AsQueryable().Any(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)) ?
+                    digitalContext.IdpCodes.AsQueryable().Where(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)).FirstOrDefault().VarValue : a.Status
+            }
+        )
+        .Where(x => x.UserName.Contains(userName.Trim()) && x.FullName.Contains(name.Trim())
+            && (String.IsNullOrEmpty(branch) || x.BranchCode == branch)
+            && (String.IsNullOrEmpty(email) || x.Email == email)
+        && (String.IsNullOrEmpty(companyId) || x.CompanyId == companyId)
+            && (String.IsNullOrEmpty(email) || x.Email == email)
+            && (String.IsNullOrEmpty(phoneNo) || x.PhoneNo == phoneNo))
+        .Distinct();
+            var formattedUsers = lstUsers.Select(temp => new
+            {
+                UserId = temp.UserId,
+                UserName = temp.UserName,
+                BranchCode = temp.BranchCode,
+                BranchName = temp.BranchName,
+                Email = temp.Email,
+                Portal = temp.Portal,
+                PhoneNo = temp.PhoneNo,
+                FirstName = temp.FirstName,
+                MiddleName = temp.MiddleName,
+                LastName = temp.LastName,
+                FullName = temp.FullName,
+                Status = temp.Status,
+                CompanyId = temp.CompanyId,
+                DateCreated = ((DateTime)temp.date).ToString("dd/MM/yyyy HH:mm:ss"),
+                StatusStr = temp.StatusStr
+            }).ToList();
+
+            var total = formattedUsers.Count();
+            if (pageSize != 0)
+            {
+                var data = formattedUsers.Skip(skip).Take(pageSize);
+                int pages = formattedUsers.Count() % pageSize >= 1 ? formattedUsers.Count() / pageSize + 1 : formattedUsers.Count() / pageSize;
+                return new { data = data.ToList(), pages = pages, total = total, pageIndex = pageIndex };
+            }
+            else
+            {
+                return new { data = formattedUsers.ToList(), pages = 0, total = total, pageIndex = 1 };
+            }
+        }
+        public async ValueTask<object> GetDetailUser(string userId)
+        {
+            var user = digitalContext.IdpUsers.AsQueryable()
+            .Select(a => new
+            {
+                UserId = a.UserId,
+                PhoneNo = a.PhoneNo,
+                BranchCode = a.BranchCode,
+                PolicyId = a.PolicyId,
+                FirstName = a.FirstName,
+                MiddleName = a.MiddleName,
+                CompanyId = a.CompanyId,
+                LastName = a.LastName,
+                Gender = a.Gender,
+                Address = a.Address,
+                Email = a.Email,
+                //HaiTX lấy SourceId để phân biệt tài khaonr LDAP hay k 
+                SourceId = a.SourceId,
+                Birthday = ((DateTime)a.Birthday).ToString("MM/dd/yyyy"),
+                Status = a.Status,
+                UserType = a.UserType,
+                EmployeeId = a.EmployeeId,
+                //UserHaveCore = !string.IsNullOrEmpty(a.Option),
+                //haitx trả thêm username core 
+                CoreInfo = string.IsNullOrEmpty(a.CbsInfo) ? new { } : Decode(a.CbsInfo)
+
+            }).SingleOrDefault(m => m.UserId == userId);
+            var userRoles = new Object();
+            if (string.IsNullOrEmpty(userId))
+            {
+                userRoles = digitalContext.IdpRoles.AsQueryable().Where(x => x.ServiceId == "BO" || x.ServiceId == "RPT").Select(y => new { value = y.RoleId });
+            }
+            else
+            {
+                userRoles = digitalContext.IdpUserInRoles.AsQueryable().Where(x => x.UserId == userId).Select(y => new { value = y.RoleId });
+            }
+
+            var userLogin = digitalContext.IdpUserLogins.AsQueryable().Where(x => x.UserId == userId).Join(digitalContext.IdpLoginInfos.AsQueryable(),
+                ul => ul.LoginId, l => l.LoginId, (ul, l) => new { ul.UserId, l.LoginName, l.ServiceId });
+            var userGroup = digitalContext.IdpRoles.AsQueryable().Where(x => userLogin.Where(u => u.ServiceId == x.ServiceId).Count() > 0).ToList()
+                .GroupJoin(digitalContext.IdpUserInRoles.AsQueryable().Where(x => x.UserId == userId), r => r.RoleId, u => u.RoleId,
+                (r, u) => new
+                {
+                    shortcut = "",
+                    label = r.RoleName,
+                    RoleName = r.RoleName,
+                    value = r.RoleId,
+                    RoleId = r.RoleId,
+                    serviceId = r.ServiceId,
+                    check = u.Count() > 0
+                });
+
+            return new { User = user, UserGroup = userGroup, Login = userLogin, UserRole = userRoles };
+        }
+        public async ValueTask<object> UpdateUser(string userName, string password, string firstName, string middleName, string lastName,
+        string gender, string email, string phoneNo, string birthday, string address, string branch, int policy, dynamic rolesBO, dynamic rolesRPT, dynamic roleThirdparty, string companyId, string id,
+         string userType, bool autoGenPass, string typesend, string actionType, string userNameCbs,  string employeeId, string serviceId, string sourceId = "", string tokencbs = "")
+        {
+            var userId = id;
+            var serviceIds = companyId == "IDP" ? "BO" : serviceId;
+            if (string.IsNullOrEmpty(actionType) && !actionType.Equals("ADD") && !actionType.Equals("EDIT"))
+                throw new IdpException("page_action_invalid", "Invalid action");
+            DigitalContext digitalContext = context.ServiceProvider.GetRequiredService<DigitalContext>();
+            DigitalContext digitalContext1 = context.ServiceProvider.GetRequiredService<DigitalContext>();
+
+            IdpUser user = await digitalContext.IdpUsers.Where(m => m.UserId == userId).FirstOrDefaultAsync();
+            string userPerform = (string)context.GetVariable(VariableKey.UserId);
+            if (actionType == "EDIT")
+            {
+                if (user == null) throw new IdpException("User Name is not existed", "");
+                //user = digitalContext.IdpUsers.AsQueryable.SingleOrDefault(m => m.UserId == userId);
+                user.UserModified = userPerform;
+                user.DateModified = DateTime.Now;
+                sourceId = user.SourceId;
+            }
+            else if (actionType == "ADD")
+            {
+                if (user != null) throw new IdpException("bo_user_name", "User is existed");
+                var check = digitalContext.IdpLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && (m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == serviceId)).Join(digitalContext.IdpUserLogins,
+                     login => login.LoginId, userlogin => userlogin.LoginId, (login, userlogin) => new { login.LoginId }).Count();
+                var checkthirdparty = digitalContext.IdpLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && m.ServiceId == "TP").Join(digitalContext.IdpUserLogins,
+                   login => login.LoginId, userlogin => userlogin.LoginId, (login, userlogin) => new { login.LoginId }).Count();
+                if (check > 0 || checkthirdparty > 0)
+                {
+                    throw new IdpException("bo_user_name", "User Name is existed");
+                }
+                user = new IdpUser();
+                user.UserId = Guid.NewGuid().ToString("N");
+                user.UserCreated = userPerform;
+                user.DateCreated = DateTime.Now;
+                user.Status = "A";
+
+            }
+            //haiTx sửa lại sourceId để phân biệt tài khoản
+            if (sourceId == "LDAP")
+            {
+                user.SourceId = sourceId;
+                user.EmployeeId = employeeId;
+            }
+            user.UserType = userType;
+            user.PhoneNo = phoneNo;
+            user.FirstName = firstName;
+            user.MiddleName = middleName;
+            user.LastName = lastName;
+            user.FullName = firstName + " " + middleName + " " + lastName;
+            user.Gender = gender;
+            user.Address = address;
+            user.Email = email;
+            user.Birthday = birthday == "" ? null : Convert.ToDateTime(birthday);
+            user.BranchCode = branch;
+            user.CompanyId = companyId;
+            //HaiTX add username CBS 
+            if (!string.IsNullOrEmpty(userNameCbs))
+            {
+                if (!digitalContext.IdpUsers.Any(x => x.CbsInfo.Contains(userNameCbs) && (actionType == "ADD" ? true : x.UserId != userId) && x.Status != "D"))
+                {
+                    dynamic infoCbs = new System.Dynamic.ExpandoObject();
+                    infoCbs.UserName = string.IsNullOrEmpty(userNameCbs) ? "" : userNameCbs;
+                    infoCbs.Token = "";
+                    user.CbsInfo = JsonConvert.SerializeObject(infoCbs);
+
+                }
+                else
+                {
+                    throw new IdpException("usercbsisusing", "User Name is using");
+                }
+            }
+
+            user.PolicyId = policy;
+            if (actionType == "ADD")
+            {
+                digitalContext.IdpUsers.Add(user);
+                List<IdpPassword> ltsPassword = new List<IdpPassword>();
+                List<string> ltsService = new List<string>();
+                var LoginId = Guid.NewGuid().ToString();
+                ltsService.Add(companyId == "IDP" ? "BO" : serviceId);
+                if (rolesRPT != null && rolesRPT.Count > 0)
+                {
+                    ltsService.Add("RPT");
+                }
+                if (autoGenPass) password = Utility.Encryption.GenaratePassword(8, true);
+                for (int i = 0; i < ltsService.Count(); i++)
+                {
+                    IdpLoginInfo loginInfo = new IdpLoginInfo();
+                    loginInfo.LoginId = LoginId;
+                    loginInfo.LoginName = userName;
+                    loginInfo.LoginType = "USERNAME";
+                    loginInfo.AuthenType = "PASSWORD";
+                    loginInfo.FailNumber = 0;
+                    loginInfo.NewLogin = true;
+                    if (ltsService[i] != "BO")
+                        loginInfo.NewLogin = false;
+                    loginInfo.PolicyId = policy;
+                    loginInfo.DateExpired = DateTime.Now.AddYears(20);
+                    loginInfo.Status = "A";
+                    loginInfo.UserCreated = userId;
+                    loginInfo.DateCreated = DateTime.Now;
+                    loginInfo.ServiceId = ltsService[i];
+                    digitalContext.IdpLoginInfos.Add(loginInfo);
+                    IdpPassword pass = new IdpPassword();
+                    pass.LoginId = loginInfo.LoginId;
+                    pass.Type = "PASSWORD";
+                    // if (typesend.ToLower() == "email" && autoGenPass == true)
+                    // {
+                    //     if (string.IsNullOrEmpty(email)) throw new IdpException("Email is not null", "");
+                    //     emailinfo.sourceId = context.WorkflowInstance.Id;
+                    //     emailinfo.to = email;
+                    //     emailinfo.cc = "";
+                    //     emailinfo.title = "Pass/Pin ";
+                    //     emailinfo.body = "New pass: " + password;
+                    //     emailinfo.attachment = "";
+                    // }
+                    //HaiTX check nếu LDAP thì k add pass
+                    if (sourceId != "LDAP")
+                    {
+                        if (autoGenPass)
+                        {
+                            pass.Password = Utility.Encryption.EncryptPasswordPlantext(loginInfo.LoginId, password);
+                            pass.PasswordTemp = Utility.Encryption.AESEncrypt(password);
+                        }
+                        else
+                        {
+                            pass.Password = Utility.Encryption.EncryptPassword(loginInfo.LoginId, password);
+                        }
+                        pass.ServiceId = ltsService[i];
+                        digitalContext.IdpLoginInfos.Add(loginInfo);
+                        digitalContext.IdpPasswords.Add(pass);
+                    }
+                }
+                IdpUserLogin login = new IdpUserLogin();
+                login.UserId = user.UserId;
+                login.LoginId = LoginId;
+                // login.ServiceId = companyId != "IDP" ? "TP" : "BO";
+                login.Status = "A";
+                digitalContext.IdpUserLogins.Add(login);
+            }
+            else
+            {
+                var userGroup = digitalContext.IdpUserInRoles.AsQueryable().Where(m => m.UserId == user.UserId)
+                    .Join(digitalContext.IdpRoles.AsQueryable().Where(m => m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == "TP" || m.ServiceId == serviceId), a => a.RoleId,
+                    b => b.RoleId, (a, b) => new { a, b });
+                foreach (var g in userGroup)
+                {
+                    digitalContext.IdpUserInRoles.Remove(g.a);
+                }
+                string loginId = (await digitalContext.IdpUserLogins.Where(m => m.UserId == user.UserId).FirstOrDefaultAsync()).LoginId;
+                IdpPassword idpPass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId != "RPT").FirstOrDefaultAsync();
+                if (rolesRPT != null && rolesRPT.Count > 0 && !(await digitalContext.IdpLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT")))
+                {
+                    if (sourceId != "LDAP")
+                    {
+                        if (!(await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT" && m.Type == "PASSWORD")))
+                        {
+                            IdpPassword pass = new IdpPassword();
+                            pass.LoginId = loginId;
+                            pass.Type = "PASSWORD";
+                            pass.Password = idpPass.Password;
+                            pass.PasswordTemp = idpPass.PasswordTemp;
+                            pass.ServiceId = "RPT";
+                            digitalContext.IdpPasswords.Add(pass);
+                        }
+                        else if (await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
+                        {
+                            IdpPassword pass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "RPT").FirstOrDefaultAsync();
+                            pass.Password = idpPass.Password;
+                            pass.PasswordTemp = idpPass.PasswordTemp;
+                        }
+                    }
+                    // IdpUserLogin loginRpt = new IdpUserLogin();
+                    // loginRpt.UserId = user.UserId;
+                    // loginRpt.LoginId = loginId;
+                    // loginRpt.ServiceId = "RPT";
+                    // loginRpt.Status = "A";
+                    // digitalContext.IdpUserLogins.Add(loginRpt);
+                    IdpLoginInfo loginRpt = new IdpLoginInfo();
+                    loginRpt = await digitalContext.IdpLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
+                    loginRpt.ServiceId = "RPT";
+                    loginRpt.Status = "A";
+                    loginRpt.UserCreated = userPerform;
+                    loginRpt.DateCreated = DateTime.Now;
+                    digitalContext.IdpLoginInfos.Add(loginRpt);
+                }
+                if (roleThirdparty != null && roleThirdparty.Count > 0 && !(await digitalContext.IdpLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP")))
+                {
+                    if (sourceId != "LDAP")
+                    {
+                        if (!(await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP" && m.Type == "PASSWORD")))
+                        {
+                            IdpPassword pass = new IdpPassword();
+                            pass.LoginId = loginId;
+                            pass.Type = "PASSWORD";
+                            pass.Password = idpPass.Password;
+                            pass.PasswordTemp = idpPass.PasswordTemp;
+                            pass.ServiceId = "TP";
+                            digitalContext.IdpPasswords.Add(pass);
+                        }
+                        else if (await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
+                        {
+                            IdpPassword pass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "TP").FirstOrDefaultAsync();
+                            pass.Password = idpPass.Password;
+                            pass.PasswordTemp = idpPass.PasswordTemp;
+                        }
+                    }
+
+                    // IdpUserLogin loginThirdparty = new IdpUserLogin();
+                    // loginThirdparty.UserId = user.UserId;
+                    // loginThirdparty.LoginId = loginId;
+                    // loginThirdparty.ServiceId = "TP";
+                    // loginThirdparty.Status = "A";
+                    // digitalContext.IdpUserLogins.Add(loginThirdparty);
+                    IdpLoginInfo loginThirdparty = new IdpLoginInfo();
+                    loginThirdparty = await digitalContext.IdpLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
+                    loginThirdparty.ServiceId = "TP";
+                    loginThirdparty.Status = "A";
+                    loginThirdparty.UserCreated = userPerform;
+                    loginThirdparty.DateCreated = DateTime.Now;
+                    digitalContext.IdpLoginInfos.Add(loginThirdparty);
+                }
+                var loginInfo = await digitalContext.IdpLoginInfos.AsQueryable().Where(x => x.Status == "A")
+                        .Join(digitalContext.IdpUserLogins.AsQueryable().Where(x => x.UserId == userId),
+                        login => login.LoginId, user => user.LoginId, (login, user) => new { login, user }).FirstOrDefaultAsync();
+                if (loginInfo == null) throw new IdpException("unauthorization", "Login information is not correct 1");
+                if (((string)loginInfo.login.Status).Equals("D"))
+                    throw new IdpException("unauthorization", "Login information is not correct 2");
+                if (!((string)loginInfo.login.Status).Equals("A"))
+                    throw new IdpException("userloginfailnotactive", "Login failed, user is not active");
+                var lstLogin = await digitalContext.IdpLoginInfos.Where(m => m.LoginId == loginId).ToListAsync();
+                foreach (var login in lstLogin)
+                {
+                    login.PolicyId = policy;
+                }
+            }
+            if (rolesBO.Count > 0)
+            {
+                foreach (string item in rolesBO)
+                {
+                    IdpUserInRole userinRole = new IdpUserInRole();
+                    userinRole.UserId = user.UserId;
+                    userinRole.RoleId = int.Parse(item);
+                    digitalContext.IdpUserInRoles.Add(userinRole);
+                }
+            }
+            if (rolesRPT != null && rolesRPT.Count > 0)
+            {
+                foreach (string item in rolesRPT)
+                {
+                    IdpUserInRole userinRole = new IdpUserInRole();
+                    userinRole.UserId = user.UserId;
+                    userinRole.RoleId = int.Parse(item);
+                    digitalContext.IdpUserInRoles.Add(userinRole);
+                }
+            }
+            if ((roleThirdparty != null && roleThirdparty.Count > 0) || companyId != "IDP")
+            {
+                foreach (string item in roleThirdparty)
+                {
+                    IdpUserInRole userinRole = new IdpUserInRole();
+                    userinRole.UserId = user.UserId;
+                    userinRole.RoleId = int.Parse(item);
+                    digitalContext.IdpUserInRoles.Add(userinRole);
+                }
+            }
+            var trancodeNotification = await digitalContext.IdpNotificationTemplates.Where(x => x.TransactionCode == "ADDNEW_USER_TELLER").FirstOrDefaultAsync();
+            /// laod config temp email, sms
+            string interServiceName = string.Empty;
+            string channelId = (string)context.GetVariable(VariableKey.ChannelId);
+            string link = string.Empty;
+            string imgTop = string.Empty;
+            string imgleft = string.Empty;
+            string imgRight = string.Empty;
+            string imgBGR = string.Empty;
+            switch (AppConfig.GetString("Idp:System:SubServiceName"))
+            {
+                case "SYS":
+                    interServiceName = "Sys";
+                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
+                    break;
+                case "WEP":
+                    interServiceName = "Wep";
+                    channelId = "IB";
+                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
+                    break;
+                case "MOP":
+                    interServiceName = "Mop";
+                    channelId = "MB";
+                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_MB")).VarValue;
+                    break;
+            }
+            imgTop = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_TOP_TEMPLATE")).Value;
+            imgleft = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_LEFT_TEMPLATE")).Value;
+            imgRight = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_RIGHT_TEMPLATE")).Value;
+            imgBGR = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_BACKGROUND")).Value;
+            string website = (await IdpCaching.GetObjectAsync("Sys_Variables", "WEBSITE")).Value;
+            string hotline = (await IdpCaching.GetObjectAsync("Sys_Variables", "HOTLINE")).Value;
+            sendInfo sendIf = new sendInfo();
+            var lstSendInfo = new List<sendInfo>();
+            string langid = (string)context.GetVariable(VariableKey.Lang);
+            var infoSms = new sendInfo();
+            var infoEmail = new sendInfo();
+            //  JObject jobjEmail = new JObject();
+            JObject jobjEmail = new JObject(
+                          new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
+                          new JProperty("Password", password),
+                          new JProperty("PasswordTemp", string.IsNullOrEmpty(user.Birthday.Value.ToString()) ? "" : user.Birthday.Value.ToString("ddMMyyyy")),
+                          new JProperty("ImgBGR", imgBGR),
+                          new JProperty("ImgTop", imgTop),
+                          new JProperty("Imgleft", imgleft),
+                          new JProperty("ImgRight", imgRight),
+                          new JProperty("Website", website),
+                          new JProperty("Hotline", hotline)
+                      );
+            JObject jobjSms = new JObject(
+                          new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
+                          new JProperty("Password", password)
+                      );
+            if (autoGenPass == true)
+            {
+                switch (typesend.ToLower())
+                {
+                    case "sms":
+                        if (string.IsNullOrEmpty(user.PhoneNo)) throw new IdpException("phonenotnull", "Phone no is not null");
+                        infoSms.to = user.PhoneNo;
+                        infoSms.tranCode = "ADDNEW_USER_TELLER";
+                        infoSms.tempParam = "SENDER";
+                        infoSms.lang = langid;
+                        infoSms.inputParam = jobjSms;
+                        infoSms.typeSend = "sms";
+                        lstSendInfo.Add(infoSms);
+                        break;
+                    case "email":
+                        if (string.IsNullOrEmpty(user.Email)) throw new IdpException("emailnotnull", "Email is not null");
+                        infoEmail.to = user.Email;
+                        infoEmail.tranCode = "ADDNEW_USER_TELLER";
+                        infoEmail.tempParam = "SENDER";
+                        infoEmail.lang = langid;
+                        infoEmail.inputParam = jobjEmail;
+                        infoEmail.typeSend = "email";
+                        lstSendInfo.Add(infoEmail);
+                        break;
+                    case "all":
+                        if (string.IsNullOrEmpty(user.PhoneNo)) throw new IdpException("phonenotnull", "Phone no is not null");
+                        infoSms.to = user.PhoneNo;
+                        infoSms.tranCode = "ADDNEW_USER_TELLER";
+                        infoSms.tempParam = "SENDER";
+                        infoSms.lang = langid;
+                        infoSms.inputParam = jobjSms;
+                        infoSms.typeSend = "sms";
+                        lstSendInfo.Add(infoSms);
+                        if (string.IsNullOrEmpty(user.Email)) throw new IdpException("emailnotnull", "Email is not null");
+                        infoEmail.to = user.Email;
+                        infoEmail.tranCode = "ADDNEW_USER_TELLER";
+                        infoEmail.tempParam = "SENDER";
+                        infoEmail.lang = langid;
+                        infoEmail.inputParam = jobjEmail;
+                        infoEmail.typeSend = "email";
+                        lstSendInfo.Add(infoEmail);
+                        break;
+                    default:
+                        throw new IdpException("typesendnotnull", "Type send password is not null", "");
+                        break;
+                }
+            }
+            await digitalContext.SaveChangesAsync();
+            context.SetVariable(VariableKey.UserId, user.UserId);
+            return lstSendInfo;
+        }
+        public async ValueTask<object> DeleteUser(dynamic userIds)
+        {
+            JArray idArr = new JArray();
+            if (userIds is string)
+            {
+                idArr.Add(userIds);
+            }
+            else
+            {
+                idArr = userIds;
+            }
+
+            foreach (var item in idArr)
+            {
+                string id = (string)item;
+
+                var record = await digitalContext.IdpUsers.Where(x => x.UserId == id).FirstOrDefaultAsync();
+                var userInRole = await digitalContext.IdpUserInRoles.Where(x => x.UserId == id).ToListAsync();
+                if (record != null)
+                {
+                    record.Status = "D";
+                    record.DateModified = DateTime.Now;
+                    record.UserModified = userId;
+                    var UserLogins = await digitalContext.IdpUserLogins
+                        .Where(m => m.UserId == record.UserId).FirstOrDefaultAsync();
+                    var UserInfo = await digitalContext.IdpLoginInfos.Where((m => m.LoginId == UserLogins.LoginId))
+                                        .ToListAsync();
+                    foreach (var user in UserInfo)
+                    {
+                        user.Status = "D";
+                        await digitalContext.SaveChangesAsync();
+                    }
+
+                }
+                if (userInRole != null)
+                {
+                    foreach (var role in userInRole)
+                    {
+                        digitalContext.IdpUserInRoles.Remove(role);
+                    }
+                }
+            }
+
+            await digitalContext.SaveChangesAsync();
             return true;
+        }
+        public async ValueTask<object> GetLoginHistory(string userId, string fromDate, string toDate, string serviceId, int pageIndex = 1, int pageSize = 0)
+        {
+            DateTime? startDate = null;
+            DateTime? endDate = null;
+            if (!string.IsNullOrEmpty(fromDate))
+            {
+                startDate = DateTime.Parse(fromDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                startDate = DateTime.Parse((String.Format("{0:d}", startDate)), null, System.Globalization.DateTimeStyles.RoundtripKind);
+            }
+            if (!string.IsNullOrEmpty(toDate))
+            {
+                endDate = DateTime.Parse(toDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
+                endDate = DateTime.Parse((String.Format("{0:d}", endDate)), null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(1);
+            }
+            int skip = ((pageIndex - 1) * pageSize);
+            var lst = await digitalContext.IdpLoginHistories.Where(x =>
+            // x.CountryName == (string.IsNullOrEmpty(CountryName) ? x.CountryName : CountryName)
+            // (string.IsNullOrEmpty(userId) || x.UserId == userId)
+            x.UserId == (string.IsNullOrEmpty(userId) ? x.UserId : userId)
+            && (x.LoginTime >= startDate)
+            && (x.LoginTime < endDate)
+            ).OrderByDescending(x => x.LoginTime).ToListAsync();
+
+            var total = lst.Count();
+            if (pageSize != 0)
+            {
+                var data = lst.Skip(skip).Take(pageSize);
+                int pages = lst.Count() % pageSize >= 1 ? lst.Count() / pageSize + 1 : lst.Count() / pageSize;
+                return new { data = data, pages = pages, total = total, pageIndex = pageIndex };
+            }
+            else
+            {
+                return new { data = lst, pages = 0, total = total, pageIndex = 1 };
+            }
         }
 
     }

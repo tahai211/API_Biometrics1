@@ -22,6 +22,10 @@ namespace MockUp_CardZ.Service.User
         ValueTask<object> UpdateRefreshToken(RefreshTokenEntity refreshToken, string userId, string serviceId);
         ValueTask<RefreshTokenEntity> GetRefreshToken(string token, string userId, string serviceId);
         ValueTask<SysUser> GetUserById( string userId);
+        ValueTask<object> GetListUser(string userId);
+        ValueTask<object> GetDetailUser(string userId);
+        ValueTask<object> UpdateUser(string userId);
+        ValueTask<object> DeleteUser(string userId);
         ValueTask<object> GetLoginHistory(string userId);
 
     }

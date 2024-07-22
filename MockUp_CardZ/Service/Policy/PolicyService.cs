@@ -21,43 +21,28 @@ namespace MockUp_CardZ.Service.Policy
         }
         public async ValueTask<object> GetListPolicyManagement(string? accessGroupId, string? desc, string? isCms, int pageIndex = 1, int pageSize = 0)
         {
-            var services = await _context.SysServices.ToListAsync();
-            var policies = _context.SysPolicies.GroupBy(y => new { y.PolicyId, y.Description, y.EfFrom, y.EfTo, y.ServiceId })
-            .Select(y => new { AccessGroupId = y.Key.ServiceId, PolicyId = y.Key.PolicyId, Description = y.Key.Description, EfFrom = y.Key.EfFrom, EfTo = y.Key.EfTo });
-            var pls = await _context.SysPolicies.Where(x => x.Description.Contains(desc)
-                && (string.IsNullOrEmpty(accessGroupId) || x.ServiceId == accessGroupId)
-                && (string.IsNullOrEmpty(isCms) || x.ServiceId != isCms)
-                )
-                .Join(policies, x => x.PolicyId, y => y.PolicyId, (x, y) => new { x, y })
-                .Where(item =>  item.x.Description == item.y.Description && item.x.EfFrom == item.y.EfFrom && item.x.EfTo == item.y.EfTo)
-                .Select(x => x.y).Distinct().ToListAsync();
 
-            var lst = pls.GroupBy(x => new { x.PolicyId, x.Description, x.EfFrom, x.EfTo, x.AccessGroupId })
-                .Select(x => new
-                {
-                    PolicyId = x.Key.PolicyId,
-                    Description = x.Key.Description,
-                    AccessGroupId = x.Key.AccessGroupId,
-                    EfFrom = ((DateTime)x.Key.EfFrom).ToString("dd-MM-yyyy"),
-                    EfTo = ((DateTime)x.Key.EfTo).ToString("dd-MM-yyyy"),
-                    //CtmTypeIdStr = GetCtmName(x.Key.CtmTypeId, custtypes),
-                    //AccessGroupName = GetAccessGroupName(x.Key.AccessGroupId),
-                    //IsDefault = isDefault(x.Key.PolicyId, x.Key.AccessGroupId)
-                });
+            int skip = (pageIndex - 1) * pageSize;
 
-            int skip = ((pageIndex - 1) * pageSize);
-            var total = lst.Count();
+            var query = _context.SysPolicies.AsNoTracking()
+                .Where(x => (string.IsNullOrEmpty(desc) || x.Description.Contains(desc))
+                    && (string.IsNullOrEmpty(accessGroupId) || x.ServiceId == accessGroupId)
+                    && (string.IsNullOrEmpty(isCms) || x.ServiceId != isCms));
+
+            var total = await query.CountAsync();
+
+            
             if (pageSize != 0)
             {
-                var data = lst.Skip(skip).Take(pageSize);
-                int pages = lst.Count() % pageSize >= 1 ? lst.Count() / pageSize + 1 : lst.Count() / pageSize;
+                var data = await query.Skip(skip).Take(pageSize).ToListAsync();
+                int pages = (int)Math.Ceiling(total / (double)pageSize);
+
                 return new { data = data, pages = pages, total = total, pageIndex = pageIndex };
             }
             else
             {
-                return new { data = lst, pages = 0, total = total, pageIndex = 1 };
+                return new { data = query, pages = 0, total = total, pageIndex = 1 };
             }
-            return true;
         }
         public async ValueTask<object> GetDetailPolicyManagement(int policyId)
         {

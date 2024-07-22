@@ -23,7 +23,7 @@ namespace MockUp_CardZ.Service.Role
         {
             int skip = ((pageIndex - 1) * pageSize);
 
-            var lstPages = _context.SysRoles.AsQueryable().Where(x => x.RoleName.Contains(roleName)
+            var lstPages = await _context.SysRoles.AsQueryable().Where(x => (string.IsNullOrEmpty(roleName) || x.RoleName.Contains(roleName))
                 && (serviceId == null || serviceId == "" || x.ServiceId == serviceId)
                 && (string.IsNullOrEmpty(usertype) || x.UserType == usertype)
                 ).Select(x => new
@@ -36,7 +36,7 @@ namespace MockUp_CardZ.Service.Role
                     Active = x.Active,
                     Description = x.Description,
                     ServiceId = x.ServiceId
-                });
+                }).ToListAsync();
             var total = lstPages.Count();
             if (pageSize != 0)
             {

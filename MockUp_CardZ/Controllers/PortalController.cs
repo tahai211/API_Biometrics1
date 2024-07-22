@@ -31,7 +31,7 @@ namespace MockUp_CardZ.Controllers
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
-                var lsiPortal = await _portalService.GetListPortalManagement(portalName, portaiId, status, 0, 1);
+                var lsiPortal = await _portalService.GetListPortalManagement(portalName, portaiId, status, pageSize, pageIndex);
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", lsiPortal);
                 return Ok(httpResponseExtensions);
             }

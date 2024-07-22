@@ -29,7 +29,7 @@ namespace MockUp_CardZ.Controllers
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
-                var lstPolicy = await _policyService.GetListPolicyManagement(accessGroupId, desc, isCms, 0, 1);
+                var lstPolicy = await _policyService.GetListPolicyManagement(accessGroupId, desc, isCms, pageIndex, pageSize);
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", lstPolicy);
                 return Ok(httpResponseExtensions);
             }
@@ -60,14 +60,14 @@ namespace MockUp_CardZ.Controllers
         [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> EditPolicyManagement(int? policyId, string? description, string? efFrom, string? efTo, string? ctmTypeId, string? accessGroupId, int? pwHis,
     int? pwAge, int? pwMinLength, int? pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
-    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType, string userId)
+    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string userId)
         {
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
                 var updatePolicy = await _policyService.UpdatePolicyManagement(policyId, description, efFrom, efTo, ctmTypeId, accessGroupId, pwHis,
      pwAge, pwMinLength, pwMaxLength, pwComplex, pwLowerCase, pwUpperCase, pwSymbols, pwNumber, resetPwTime,
-     accessTimeFrom, accessTimeTo, failAccessNumber, actionType, userId);
+     accessTimeFrom, accessTimeTo, failAccessNumber, "EDIT", userId);
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", updatePolicy);
                 return Ok(httpResponseExtensions);
             }
@@ -81,14 +81,14 @@ namespace MockUp_CardZ.Controllers
         [Check(checkRole: false, checkToken: false)]
         public async Task<IActionResult> AddPolicyManagement(int? policyId, string? description, string? efFrom, string? efTo, string? ctmTypeId, string? accessGroupId, int? pwHis,
     int? pwAge, int? pwMinLength, int? pwMaxLength, bool pwComplex, bool pwLowerCase, bool pwUpperCase, bool pwSymbols, bool pwNumber, int resetPwTime,
-    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string actionType, string userId)
+    string accessTimeFrom, string accessTimeTo, int failAccessNumber, string userId)
         {
             try
             {
                 HttpResponseExtensions httpResponseExtensions = null;
                 var updatePolicy = await _policyService.UpdatePolicyManagement( policyId,  description,  efFrom, efTo,  ctmTypeId, accessGroupId, pwHis,
      pwAge, pwMinLength, pwMaxLength, pwComplex, pwLowerCase, pwUpperCase, pwSymbols, pwNumber, resetPwTime,
-     accessTimeFrom, accessTimeTo, failAccessNumber, actionType, userId);
+     accessTimeFrom, accessTimeTo, failAccessNumber, "ADD", userId);
                 httpResponseExtensions = new HttpResponseExtensions(HttpStatusCode.OK, "Thành công", updatePolicy);
                 return Ok(httpResponseExtensions);
             }
