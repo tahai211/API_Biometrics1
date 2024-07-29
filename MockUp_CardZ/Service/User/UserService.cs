@@ -547,43 +547,35 @@ namespace MockUp_CardZ.Service.User
             var userId = id;
             var serviceIds = companyId == "IDP" ? "BO" : serviceId;
             if (string.IsNullOrEmpty(actionType) && !actionType.Equals("ADD") && !actionType.Equals("EDIT"))
-                throw new IdpException("page_action_invalid", "Invalid action");
-            DigitalContext digitalContext = context.ServiceProvider.GetRequiredService<DigitalContext>();
-            DigitalContext digitalContext1 = context.ServiceProvider.GetRequiredService<DigitalContext>();
+                throw new SysException("page_action_invalid", "Invalid action");
 
-            IdpUser user = await digitalContext.IdpUsers.Where(m => m.UserId == userId).FirstOrDefaultAsync();
-            string userPerform = (string)context.GetVariable(VariableKey.UserId);
+            SysUser user = await _context.SysUsers.Where(m => m.UserId == userId).FirstOrDefaultAsync();
+            //string userPerform = (string)_context.GetVariable(VariableKey.UserId);
             if (actionType == "EDIT")
             {
-                if (user == null) throw new IdpException("User Name is not existed", "");
+                if (user == null) throw new SysException("User Name is not existed", "");
                 //user = digitalContext.IdpUsers.AsQueryable.SingleOrDefault(m => m.UserId == userId);
-                user.UserModified = userPerform;
+                user.UserModified = "userPerform";
                 user.DateModified = DateTime.Now;
                 sourceId = user.SourceId;
             }
             else if (actionType == "ADD")
             {
-                if (user != null) throw new IdpException("bo_user_name", "User is existed");
-                var check = digitalContext.IdpLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && (m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == serviceId)).Join(digitalContext.IdpUserLogins,
+                if (user != null) throw new SysException("bo_user_name", "User is existed");
+                var check = _context.SysLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && (m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == serviceId)).Join(_context.SysUserLogins,
                      login => login.LoginId, userlogin => userlogin.LoginId, (login, userlogin) => new { login.LoginId }).Count();
-                var checkthirdparty = digitalContext.IdpLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && m.ServiceId == "TP").Join(digitalContext.IdpUserLogins,
+                var checkthirdparty = _context.SysLoginInfos.Where(m => m.LoginName == userName && m.Status != "D" && m.ServiceId == "TP").Join(_context.SysUserLogins,
                    login => login.LoginId, userlogin => userlogin.LoginId, (login, userlogin) => new { login.LoginId }).Count();
                 if (check > 0 || checkthirdparty > 0)
                 {
-                    throw new IdpException("bo_user_name", "User Name is existed");
+                    throw new SysException("bo_user_name", "User Name is existed");
                 }
-                user = new IdpUser();
+                user = new SysUser();
                 user.UserId = Guid.NewGuid().ToString("N");
-                user.UserCreated = userPerform;
+                user.UserCreated = "userPerform";
                 user.DateCreated = DateTime.Now;
                 user.Status = "A";
 
-            }
-            //haiTx sửa lại sourceId để phân biệt tài khoản
-            if (sourceId == "LDAP")
-            {
-                user.SourceId = sourceId;
-                user.EmployeeId = employeeId;
             }
             user.UserType = userType;
             user.PhoneNo = phoneNo;
@@ -597,22 +589,7 @@ namespace MockUp_CardZ.Service.User
             user.Birthday = birthday == "" ? null : Convert.ToDateTime(birthday);
             user.BranchCode = branch;
             user.CompanyId = companyId;
-            //HaiTX add username CBS 
-            if (!string.IsNullOrEmpty(userNameCbs))
-            {
-                if (!digitalContext.IdpUsers.Any(x => x.CbsInfo.Contains(userNameCbs) && (actionType == "ADD" ? true : x.UserId != userId) && x.Status != "D"))
-                {
-                    dynamic infoCbs = new System.Dynamic.ExpandoObject();
-                    infoCbs.UserName = string.IsNullOrEmpty(userNameCbs) ? "" : userNameCbs;
-                    infoCbs.Token = "";
-                    user.CbsInfo = JsonConvert.SerializeObject(infoCbs);
-
-                }
-                else
-                {
-                    throw new IdpException("usercbsisusing", "User Name is using");
-                }
-            }
+            
 
             user.PolicyId = policy;
             if (actionType == "ADD")
@@ -928,21 +905,21 @@ namespace MockUp_CardZ.Service.User
             {
                 string id = (string)item;
 
-                var record = await digitalContext.IdpUsers.Where(x => x.UserId == id).FirstOrDefaultAsync();
-                var userInRole = await digitalContext.IdpUserInRoles.Where(x => x.UserId == id).ToListAsync();
+                var record = await _context.SysUsers.Where(x => x.UserId == id).FirstOrDefaultAsync();
+                var userInRole = await _context.SysUserInRoles.Where(x => x.UserId == id).ToListAsync();
                 if (record != null)
                 {
                     record.Status = "D";
                     record.DateModified = DateTime.Now;
-                    record.UserModified = userId;
-                    var UserLogins = await digitalContext.IdpUserLogins
+                    record.UserModified = "userId";
+                    var UserLogins = await _context.SysUserLogins
                         .Where(m => m.UserId == record.UserId).FirstOrDefaultAsync();
-                    var UserInfo = await digitalContext.IdpLoginInfos.Where((m => m.LoginId == UserLogins.LoginId))
+                    var UserInfo = await _context.SysLoginInfos.Where((m => m.LoginId == UserLogins.LoginId))
                                         .ToListAsync();
                     foreach (var user in UserInfo)
                     {
                         user.Status = "D";
-                        await digitalContext.SaveChangesAsync();
+                        await _context.SaveChangesAsync();
                     }
 
                 }
@@ -950,12 +927,12 @@ namespace MockUp_CardZ.Service.User
                 {
                     foreach (var role in userInRole)
                     {
-                        digitalContext.IdpUserInRoles.Remove(role);
+                        _context.SysUserInRoles.Remove(role);
                     }
                 }
             }
 
-            await digitalContext.SaveChangesAsync();
+            await _context.SaveChangesAsync();
             return true;
         }
         public async ValueTask<object> GetLoginHistory(string userId, string fromDate, string toDate, string serviceId, int pageIndex = 1, int pageSize = 0)
@@ -973,9 +950,7 @@ namespace MockUp_CardZ.Service.User
                 endDate = DateTime.Parse((String.Format("{0:d}", endDate)), null, System.Globalization.DateTimeStyles.RoundtripKind).AddDays(1);
             }
             int skip = ((pageIndex - 1) * pageSize);
-            var lst = await digitalContext.IdpLoginHistories.Where(x =>
-            // x.CountryName == (string.IsNullOrEmpty(CountryName) ? x.CountryName : CountryName)
-            // (string.IsNullOrEmpty(userId) || x.UserId == userId)
+            var lst = await _context.SysLoginHistories.Where(x =>
             x.UserId == (string.IsNullOrEmpty(userId) ? x.UserId : userId)
             && (x.LoginTime >= startDate)
             && (x.LoginTime < endDate)
