@@ -174,6 +174,7 @@ namespace MockUp_CardZ.Infra.Common
         /// <param name="contentType">http content type</param>
         /// <param name="publicKey">the public key that received from client</param>
         /// <returns></returns>
+        /// 
         public static string ServerEncrypt(string sinput, string contentType, string publicKey)
         {
             string aesPass = Guid.NewGuid().ToString();
@@ -349,6 +350,23 @@ namespace MockUp_CardZ.Infra.Common
             {
                 // ComputeHash - returns byte array  
                 byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
+        }
+        public static string Sha512(string rawData)
+        {
+            // Create a SHA512   
+            using (SHA512 sha512Hash = SHA512.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha512Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
 
                 // Convert byte array to a string   
                 StringBuilder builder = new StringBuilder();

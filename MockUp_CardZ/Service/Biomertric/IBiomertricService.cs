@@ -8,7 +8,7 @@ namespace MockUp_CardZ.Service.Biomertric
 {
     public interface IBiomertricService 
     {
-        ValueTask<object> RegisterBiomertric(string userName, string passWord, string serviceId);
-        ValueTask<object> PositivelyBiomertric(string userName, string passWord, string serviceId);
+        ValueTask<object> RegisterBiomertric(string image);
+        ValueTask<object> PositivelyBiomertric(string image, string dataQR);
     }
 }

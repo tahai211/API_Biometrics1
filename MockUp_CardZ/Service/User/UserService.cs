@@ -99,8 +99,8 @@ namespace MockUp_CardZ.Service.User
             //        login.FailNumber += 1;
             //        login.LastLoginFail = DateTime.Now;
             //        login.BiometricToken = string.Empty; //Fiona - clear biometric when biotoken is fail
-            //        await digitalContext.SaveChangesAsync();
-            //        throw new IdpException("unauthorizationbiometric", "Biometric method is invalid on your device. Please login by your password.");
+            //        await _context.SaveChangesAsync();
+            //        throw new SysException("unauthorizationbiometric", "Biometric method is invalid on your device. Please login by your password.");
             //    }
             //}
             if (!string.IsNullOrEmpty(passWord))
@@ -195,10 +195,10 @@ namespace MockUp_CardZ.Service.User
             #region Todo Check Device
             //var userInfo = await IdpCaching.GetObjectAsync("Ctm_Users", loginInfo.user.UserId);
             //if (!((string)userInfo.Status).Equals("A"))
-            //    throw new IdpException("userloginfailnotactive", "Login failed, user is not active");
+            //    throw new SysException("userloginfailnotactive", "Login failed, user is not active");
             //var custInfo = await IdpCaching.GetObjectAsync("Ctm_CustInfo", (string)userInfo.CustId);
             //if (!((string)custInfo.Status).Equals("A"))
-            //    throw new IdpException("customerstatusisvalid", "Customer status is invalid");
+            //    throw new SysException("customerstatusisvalid", "Customer status is invalid");
 
             ////GiapTT 20240410 Trả thêm BranchName
             //var branchInfo = (await IdpCaching.GetObjectAsync("Idp_Branch", custInfo.BranchId, bankCode));
@@ -210,8 +210,8 @@ namespace MockUp_CardZ.Service.User
             //    string DeviceIdAuthen = userInfo.PhoneNo;
             //    login.DeviceId = deviceId;
             //    await AuthenticationUtility.AuthenTranForUserNotLogin(AuthenType, AuthenCode, loginInfo.user.UserId, DeviceIdAuthen, context);
-            //    addLoginHis(digitalContext, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
-            //    await digitalContext.SaveChangesAsync();
+            //    addLoginHis(_context, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
+            //    await _context.SaveChangesAsync();
             //}
             //ImgAvatar = userInfo.Image == null ? (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_AVATAR_DEFAIL")).Value : userInfo.Image;
             //// first login or new device
@@ -223,9 +223,9 @@ namespace MockUp_CardZ.Service.User
             //checksendMail = Authentication != null ? true : false;
 
             ////check role hunglt
-            //var userInRole = await digitalContext.IdpUserInRoles.Where(x => x.UserId == loginInfo.user.UserId)
-            //        .Join(digitalContext.IdpRoles.Where(c => c.ServiceId == serviceId), user => user.RoleId, role => role.RoleId, (user, role) => new { role }).FirstOrDefaultAsync();
-            //if (userInRole == null) throw new IdpException("usernothaveservicerole", "Your user is not supported by this banking service. Please contact the nearest bank for further support.");
+            //var userInRole = await _context.SysUserInRoles.Where(x => x.UserId == loginInfo.user.UserId)
+            //        .Join(_context.SysRoles.Where(c => c.ServiceId == serviceId), user => user.RoleId, role => role.RoleId, (user, role) => new { role }).FirstOrDefaultAsync();
+            //if (userInRole == null) throw new SysException("usernothaveservicerole", "Your user is not supported by this banking service. Please contact the nearest bank for further support.");
 
             ////
             //if (loginInfo.login.NewLogin == true || isNewDevice(deviceId, login.DeviceId))
@@ -239,8 +239,8 @@ namespace MockUp_CardZ.Service.User
             //    login.FailNumber = 0;
             //    login.LastLoginTime = DateTime.Now;
 
-            //    // addLoginHis(digitalContext, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
-            //    await digitalContext.SaveChangesAsync();
+            //    // addLoginHis(_context, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
+            //    await _context.SaveChangesAsync();
             //    return new
             //    {
             //        result = true,
@@ -283,7 +283,7 @@ namespace MockUp_CardZ.Service.User
             //                companyId = (await IdpCaching.GetObjectAsync("Ctm_CustAccount", (string)userInfo.CustId, (string)userInfo.DefaultAccount)) != null ? (string)(await IdpCaching.GetObjectAsync("Ctm_CustAccount", (string)userInfo.CustId, (string)userInfo.DefaultAccount)).CompanyId : string.Empty,
             //            },
             //            //GiapTT - 04-08-2023 trả ra list Profile
-            //            lstProfile = genlistUserInfo(digitalContext, usermulti.Select(x => x.UserId).ToArray()),
+            //            lstProfile = genlistUserInfo(_context, usermulti.Select(x => x.UserId).ToArray()),
 
             //            //GiapTT them biến time check
             //            timeCheckUserAtion = timeCheckUserAtion,
@@ -296,10 +296,10 @@ namespace MockUp_CardZ.Service.User
             //else//HaiTX gộp trường hợp k newLogin and newDevice
             //{
 
-            //    addLoginHis(digitalContext, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
+            //    addLoginHis(_context, loginInfo.user.UserId, serviceId, clientInfo["UserAgent"].ToString(), clientInfo["IpAddress"].ToString(), string.Empty);
             //    login.FailNumber = 0;
             //    login.LastLoginTime = DateTime.Now;
-            //    await digitalContext.SaveChangesAsync();
+            //    await _context.SaveChangesAsync();
             //    return new
             //    {
             //        result = true,
@@ -347,7 +347,7 @@ namespace MockUp_CardZ.Service.User
             //            },
             //            //multiProfile = isMulti,
             //            flagNewDevice = true,
-            //            lstProfile = genlistUserInfo(digitalContext, usermulti.Select(x => x.UserId).ToArray()),
+            //            lstProfile = genlistUserInfo(_context, usermulti.Select(x => x.UserId).ToArray()),
             //            //GiapTT them biến time check
             //            timeCheckUserAtion = timeCheckUserAtion,
             //            timeRevokeToken = timeRevokeToken,
@@ -413,12 +413,12 @@ namespace MockUp_CardZ.Service.User
             
             int skip = ((pageIndex - 1) * pageSize);
             //HaiTX Sửa  loại bỏ service id trong kq để ra 1 dòng khi k truyền service Id 
-            var lstUsers = digitalContext.IdpUsers.AsQueryable()
+            var lstUsers = _context.SysUsers.AsQueryable()
         .Where(x => (string.IsNullOrEmpty(status) || x.Status == status) && (x.Status != "D") && (string.IsNullOrEmpty(branch) || x.BranchCode == branch))
         .Join(
-            digitalContext.IdpUserLogins.AsQueryable()
+            _context.SysUserLogins.AsQueryable()
             .Join(
-                digitalContext.IdpLoginInfos.AsQueryable().Where(userlogin => (string.IsNullOrEmpty(serviceId) || userlogin.ServiceId == serviceId) && userlogin.Status != "D"),
+                _context.SysLoginInfos.AsQueryable().Where(userlogin => (string.IsNullOrEmpty(serviceId) || userlogin.ServiceId == serviceId) && userlogin.Status != "D"),
                 userlogin => userlogin.LoginId,
                 login => login.LoginId,
                 (userlogin, login) => new { userlogin.UserId, login.LoginName, login.ServiceId }
@@ -430,11 +430,11 @@ namespace MockUp_CardZ.Service.User
                 UserId = a.UserId,
                 UserName = b.LoginName,
                 BranchCode = a.BranchCode,
-                BranchName = digitalContext.IdpBranches.AsQueryable().Any(code => code.BranchCode == a.BranchCode) ?
-                digitalContext.IdpBranches.AsQueryable().Where(code => code.BranchCode == a.BranchCode).FirstOrDefault().BranchName : a.BranchCode,
+                //BranchName = _context.IdpBranches.AsQueryable().Any(code => code.BranchCode == a.BranchCode) ?
+                //_context.IdpBranches.AsQueryable().Where(code => code.BranchCode == a.BranchCode).FirstOrDefault().BranchName : a.BranchCode,
                 Email = a.Email,
-                Portal = string.IsNullOrEmpty(serviceId) ? "" : (digitalContext.IdpServices.AsQueryable().Any(code => code.ServiceId == b.ServiceId) ?
-                digitalContext.IdpServices.AsQueryable().Where(code => code.ServiceId == b.ServiceId).FirstOrDefault().ServiceName : b.ServiceId),
+                Portal = string.IsNullOrEmpty(serviceId) ? "" : (_context.SysServices.AsQueryable().Any(code => code.ServiceId == b.ServiceId) ?
+                _context.SysServices.AsQueryable().Where(code => code.ServiceId == b.ServiceId).FirstOrDefault().ServiceName : b.ServiceId),
                 PhoneNo = a.PhoneNo,
                 FirstName = a.FirstName,
                 MiddleName = a.MiddleName,
@@ -444,8 +444,8 @@ namespace MockUp_CardZ.Service.User
                 CompanyId = a.CompanyId,
                 date = a.DateCreated, // Convert DateCreated to the desired format
                 DateCreated = "",
-                StatusStr = digitalContext.IdpCodes.AsQueryable().Any(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)) ?
-                    digitalContext.IdpCodes.AsQueryable().Where(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)).FirstOrDefault().VarValue : a.Status
+                //StatusStr = _context.IdpCodes.AsQueryable().Any(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)) ?
+                //    _context.IdpCodes.AsQueryable().Where(code => code.VarGroup.Equals("User_Status") && code.VarKey.Equals(a.Status)).FirstOrDefault().VarValue : a.Status
             }
         )
         .Where(x => x.UserName.Contains(userName.Trim()) && x.FullName.Contains(name.Trim())
@@ -460,7 +460,7 @@ namespace MockUp_CardZ.Service.User
                 UserId = temp.UserId,
                 UserName = temp.UserName,
                 BranchCode = temp.BranchCode,
-                BranchName = temp.BranchName,
+                //BranchName = temp.BranchName,
                 Email = temp.Email,
                 Portal = temp.Portal,
                 PhoneNo = temp.PhoneNo,
@@ -471,7 +471,7 @@ namespace MockUp_CardZ.Service.User
                 Status = temp.Status,
                 CompanyId = temp.CompanyId,
                 DateCreated = ((DateTime)temp.date).ToString("dd/MM/yyyy HH:mm:ss"),
-                StatusStr = temp.StatusStr
+                //StatusStr = temp.StatusStr
             }).ToList();
 
             var total = formattedUsers.Count();
@@ -488,7 +488,7 @@ namespace MockUp_CardZ.Service.User
         }
         public async ValueTask<object> GetDetailUser(string userId)
         {
-            var user = digitalContext.IdpUsers.AsQueryable()
+            var user = _context.SysUsers.AsQueryable()
             .Select(a => new
             {
                 UserId = a.UserId,
@@ -507,26 +507,26 @@ namespace MockUp_CardZ.Service.User
                 Birthday = ((DateTime)a.Birthday).ToString("MM/dd/yyyy"),
                 Status = a.Status,
                 UserType = a.UserType,
-                EmployeeId = a.EmployeeId,
+                //EmployeeId = a.EmployeeId,
                 //UserHaveCore = !string.IsNullOrEmpty(a.Option),
                 //haitx trả thêm username core 
-                CoreInfo = string.IsNullOrEmpty(a.CbsInfo) ? new { } : Decode(a.CbsInfo)
+                //CoreInfo = string.IsNullOrEmpty(a.CbsInfo) ? new { } : Decode(a.CbsInfo)
 
             }).SingleOrDefault(m => m.UserId == userId);
             var userRoles = new Object();
             if (string.IsNullOrEmpty(userId))
             {
-                userRoles = digitalContext.IdpRoles.AsQueryable().Where(x => x.ServiceId == "BO" || x.ServiceId == "RPT").Select(y => new { value = y.RoleId });
+                userRoles = _context.SysRoles.AsQueryable().Where(x => x.ServiceId == "BO" || x.ServiceId == "RPT").Select(y => new { value = y.RoleId });
             }
             else
             {
-                userRoles = digitalContext.IdpUserInRoles.AsQueryable().Where(x => x.UserId == userId).Select(y => new { value = y.RoleId });
+                userRoles = _context.SysUserInRoles.AsQueryable().Where(x => x.UserId == userId).Select(y => new { value = y.RoleId });
             }
 
-            var userLogin = digitalContext.IdpUserLogins.AsQueryable().Where(x => x.UserId == userId).Join(digitalContext.IdpLoginInfos.AsQueryable(),
+            var userLogin = _context.SysUserLogins.AsQueryable().Where(x => x.UserId == userId).Join(_context.SysLoginInfos.AsQueryable(),
                 ul => ul.LoginId, l => l.LoginId, (ul, l) => new { ul.UserId, l.LoginName, l.ServiceId });
-            var userGroup = digitalContext.IdpRoles.AsQueryable().Where(x => userLogin.Where(u => u.ServiceId == x.ServiceId).Count() > 0).ToList()
-                .GroupJoin(digitalContext.IdpUserInRoles.AsQueryable().Where(x => x.UserId == userId), r => r.RoleId, u => u.RoleId,
+            var userGroup = _context.SysRoles.AsQueryable().Where(x => userLogin.Where(u => u.ServiceId == x.ServiceId).Count() > 0).ToList()
+                .GroupJoin(_context.SysUserInRoles.AsQueryable().Where(x => x.UserId == userId), r => r.RoleId, u => u.RoleId,
                 (r, u) => new
                 {
                     shortcut = "",
@@ -550,11 +550,11 @@ namespace MockUp_CardZ.Service.User
                 throw new SysException("page_action_invalid", "Invalid action");
 
             SysUser user = await _context.SysUsers.Where(m => m.UserId == userId).FirstOrDefaultAsync();
-            //string userPerform = (string)_context.GetVariable(VariableKey.UserId);
+            string userPerform = "";
             if (actionType == "EDIT")
             {
                 if (user == null) throw new SysException("User Name is not existed", "");
-                //user = digitalContext.IdpUsers.AsQueryable.SingleOrDefault(m => m.UserId == userId);
+                //user = _context.IdpUsers.AsQueryable.SingleOrDefault(m => m.UserId == userId);
                 user.UserModified = "userPerform";
                 user.DateModified = DateTime.Now;
                 sourceId = user.SourceId;
@@ -594,8 +594,8 @@ namespace MockUp_CardZ.Service.User
             user.PolicyId = policy;
             if (actionType == "ADD")
             {
-                digitalContext.IdpUsers.Add(user);
-                List<IdpPassword> ltsPassword = new List<IdpPassword>();
+                _context.SysUsers.Add(user);
+                List<SysPassword> ltsPassword = new List<SysPassword>();
                 List<string> ltsService = new List<string>();
                 var LoginId = Guid.NewGuid().ToString();
                 ltsService.Add(companyId == "IDP" ? "BO" : serviceId);
@@ -603,10 +603,10 @@ namespace MockUp_CardZ.Service.User
                 {
                     ltsService.Add("RPT");
                 }
-                if (autoGenPass) password = Utility.Encryption.GenaratePassword(8, true);
+                if (autoGenPass) password = Encryption.GenaratePassword(8, true);
                 for (int i = 0; i < ltsService.Count(); i++)
                 {
-                    IdpLoginInfo loginInfo = new IdpLoginInfo();
+                    SysLoginInfo loginInfo = new SysLoginInfo();
                     loginInfo.LoginId = LoginId;
                     loginInfo.LoginName = userName;
                     loginInfo.LoginType = "USERNAME";
@@ -621,13 +621,13 @@ namespace MockUp_CardZ.Service.User
                     loginInfo.UserCreated = userId;
                     loginInfo.DateCreated = DateTime.Now;
                     loginInfo.ServiceId = ltsService[i];
-                    digitalContext.IdpLoginInfos.Add(loginInfo);
-                    IdpPassword pass = new IdpPassword();
+                    _context.SysLoginInfos.Add(loginInfo);
+                    SysPassword pass = new SysPassword();
                     pass.LoginId = loginInfo.LoginId;
                     pass.Type = "PASSWORD";
                     // if (typesend.ToLower() == "email" && autoGenPass == true)
                     // {
-                    //     if (string.IsNullOrEmpty(email)) throw new IdpException("Email is not null", "");
+                    //     if (string.IsNullOrEmpty(email)) throw new SysException("Email is not null", "");
                     //     emailinfo.sourceId = context.WorkflowInstance.Id;
                     //     emailinfo.to = email;
                     //     emailinfo.cc = "";
@@ -640,53 +640,53 @@ namespace MockUp_CardZ.Service.User
                     {
                         if (autoGenPass)
                         {
-                            pass.Password = Utility.Encryption.EncryptPasswordPlantext(loginInfo.LoginId, password);
-                            pass.PasswordTemp = Utility.Encryption.AESEncrypt(password);
+                            pass.Password = Encryption.EncryptPasswordPlantext(loginInfo.LoginId, password);
+                            pass.PasswordTemp = Encryption.AESEncrypt(password);
                         }
                         else
                         {
-                            pass.Password = Utility.Encryption.EncryptPassword(loginInfo.LoginId, password);
+                            pass.Password = Encryption.EncryptPassword(loginInfo.LoginId, password);
                         }
                         pass.ServiceId = ltsService[i];
-                        digitalContext.IdpLoginInfos.Add(loginInfo);
-                        digitalContext.IdpPasswords.Add(pass);
+                        _context.SysLoginInfos.Add(loginInfo);
+                        _context.SysPasswords.Add(pass);
                     }
                 }
-                IdpUserLogin login = new IdpUserLogin();
+                SysUserLogin login = new SysUserLogin();
                 login.UserId = user.UserId;
                 login.LoginId = LoginId;
                 // login.ServiceId = companyId != "IDP" ? "TP" : "BO";
                 login.Status = "A";
-                digitalContext.IdpUserLogins.Add(login);
+                _context.SysUserLogins.Add(login);
             }
             else
             {
-                var userGroup = digitalContext.IdpUserInRoles.AsQueryable().Where(m => m.UserId == user.UserId)
-                    .Join(digitalContext.IdpRoles.AsQueryable().Where(m => m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == "TP" || m.ServiceId == serviceId), a => a.RoleId,
+                var userGroup = _context.SysUserInRoles.AsQueryable().Where(m => m.UserId == user.UserId)
+                    .Join(_context.SysRoles.AsQueryable().Where(m => m.ServiceId == "BO" || m.ServiceId == "RPT" || m.ServiceId == "TP" || m.ServiceId == serviceId), a => a.RoleId,
                     b => b.RoleId, (a, b) => new { a, b });
                 foreach (var g in userGroup)
                 {
-                    digitalContext.IdpUserInRoles.Remove(g.a);
+                    _context.SysUserInRoles.Remove(g.a);
                 }
-                string loginId = (await digitalContext.IdpUserLogins.Where(m => m.UserId == user.UserId).FirstOrDefaultAsync()).LoginId;
-                IdpPassword idpPass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId != "RPT").FirstOrDefaultAsync();
-                if (rolesRPT != null && rolesRPT.Count > 0 && !(await digitalContext.IdpLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT")))
+                string loginId = (await _context.SysUserLogins.Where(m => m.UserId == user.UserId).FirstOrDefaultAsync()).LoginId;
+                SysPassword idpPass = await _context.SysPasswords.Where(m => m.LoginId == loginId && m.ServiceId != "RPT").FirstOrDefaultAsync();
+                if (rolesRPT != null && rolesRPT.Count > 0 && !(await _context.SysLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT")))
                 {
                     if (sourceId != "LDAP")
                     {
-                        if (!(await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT" && m.Type == "PASSWORD")))
+                        if (!(await _context.SysPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "RPT" && m.Type == "PASSWORD")))
                         {
-                            IdpPassword pass = new IdpPassword();
+                            SysPassword pass = new SysPassword();
                             pass.LoginId = loginId;
                             pass.Type = "PASSWORD";
                             pass.Password = idpPass.Password;
                             pass.PasswordTemp = idpPass.PasswordTemp;
                             pass.ServiceId = "RPT";
-                            digitalContext.IdpPasswords.Add(pass);
+                            _context.SysPasswords.Add(pass);
                         }
-                        else if (await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
+                        else if (await _context.SysPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
                         {
-                            IdpPassword pass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "RPT").FirstOrDefaultAsync();
+                            SysPassword pass = await _context.SysPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "RPT").FirstOrDefaultAsync();
                             pass.Password = idpPass.Password;
                             pass.PasswordTemp = idpPass.PasswordTemp;
                         }
@@ -696,32 +696,32 @@ namespace MockUp_CardZ.Service.User
                     // loginRpt.LoginId = loginId;
                     // loginRpt.ServiceId = "RPT";
                     // loginRpt.Status = "A";
-                    // digitalContext.IdpUserLogins.Add(loginRpt);
-                    IdpLoginInfo loginRpt = new IdpLoginInfo();
-                    loginRpt = await digitalContext.IdpLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
+                    // _context.SysUserLogins.Add(loginRpt);
+                    SysLoginInfo loginRpt = new SysLoginInfo();
+                    loginRpt = await _context.SysLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
                     loginRpt.ServiceId = "RPT";
                     loginRpt.Status = "A";
                     loginRpt.UserCreated = userPerform;
                     loginRpt.DateCreated = DateTime.Now;
-                    digitalContext.IdpLoginInfos.Add(loginRpt);
+                    _context.SysLoginInfos.Add(loginRpt);
                 }
-                if (roleThirdparty != null && roleThirdparty.Count > 0 && !(await digitalContext.IdpLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP")))
+                if (roleThirdparty != null && roleThirdparty.Count > 0 && !(await _context.SysLoginInfos.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP")))
                 {
                     if (sourceId != "LDAP")
                     {
-                        if (!(await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP" && m.Type == "PASSWORD")))
+                        if (!(await _context.SysPasswords.AnyAsync(m => m.LoginId == loginId && m.ServiceId == "TP" && m.Type == "PASSWORD")))
                         {
-                            IdpPassword pass = new IdpPassword();
+                            SysPassword pass = new SysPassword();
                             pass.LoginId = loginId;
                             pass.Type = "PASSWORD";
                             pass.Password = idpPass.Password;
                             pass.PasswordTemp = idpPass.PasswordTemp;
                             pass.ServiceId = "TP";
-                            digitalContext.IdpPasswords.Add(pass);
+                            _context.SysPasswords.Add(pass);
                         }
-                        else if (await digitalContext.IdpPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
+                        else if (await _context.SysPasswords.AnyAsync(m => m.LoginId == loginId && m.Type == "PASSWORD"))
                         {
-                            IdpPassword pass = await digitalContext.IdpPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "TP").FirstOrDefaultAsync();
+                            SysPassword pass = await _context.SysPasswords.Where(m => m.LoginId == loginId && m.ServiceId == "TP").FirstOrDefaultAsync();
                             pass.Password = idpPass.Password;
                             pass.PasswordTemp = idpPass.PasswordTemp;
                         }
@@ -732,24 +732,24 @@ namespace MockUp_CardZ.Service.User
                     // loginThirdparty.LoginId = loginId;
                     // loginThirdparty.ServiceId = "TP";
                     // loginThirdparty.Status = "A";
-                    // digitalContext.IdpUserLogins.Add(loginThirdparty);
-                    IdpLoginInfo loginThirdparty = new IdpLoginInfo();
-                    loginThirdparty = await digitalContext.IdpLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
+                    // _context.SysUserLogins.Add(loginThirdparty);
+                    SysLoginInfo loginThirdparty = new SysLoginInfo();
+                    loginThirdparty = await _context.SysLoginInfos.Where(x => x.LoginId == loginId).FirstOrDefaultAsync();
                     loginThirdparty.ServiceId = "TP";
                     loginThirdparty.Status = "A";
                     loginThirdparty.UserCreated = userPerform;
                     loginThirdparty.DateCreated = DateTime.Now;
-                    digitalContext.IdpLoginInfos.Add(loginThirdparty);
+                    _context.SysLoginInfos.Add(loginThirdparty);
                 }
-                var loginInfo = await digitalContext.IdpLoginInfos.AsQueryable().Where(x => x.Status == "A")
-                        .Join(digitalContext.IdpUserLogins.AsQueryable().Where(x => x.UserId == userId),
+                var loginInfo = await _context.SysLoginInfos.AsQueryable().Where(x => x.Status == "A")
+                        .Join(_context.SysUserLogins.AsQueryable().Where(x => x.UserId == userId),
                         login => login.LoginId, user => user.LoginId, (login, user) => new { login, user }).FirstOrDefaultAsync();
-                if (loginInfo == null) throw new IdpException("unauthorization", "Login information is not correct 1");
+                if (loginInfo == null) throw new SysException("unauthorization", "Login information is not correct 1");
                 if (((string)loginInfo.login.Status).Equals("D"))
-                    throw new IdpException("unauthorization", "Login information is not correct 2");
+                    throw new SysException("unauthorization", "Login information is not correct 2");
                 if (!((string)loginInfo.login.Status).Equals("A"))
-                    throw new IdpException("userloginfailnotactive", "Login failed, user is not active");
-                var lstLogin = await digitalContext.IdpLoginInfos.Where(m => m.LoginId == loginId).ToListAsync();
+                    throw new SysException("userloginfailnotactive", "Login failed, user is not active");
+                var lstLogin = await _context.SysLoginInfos.Where(m => m.LoginId == loginId).ToListAsync();
                 foreach (var login in lstLogin)
                 {
                     login.PolicyId = policy;
@@ -759,134 +759,134 @@ namespace MockUp_CardZ.Service.User
             {
                 foreach (string item in rolesBO)
                 {
-                    IdpUserInRole userinRole = new IdpUserInRole();
+                    SysUserInRole userinRole = new SysUserInRole();
                     userinRole.UserId = user.UserId;
                     userinRole.RoleId = int.Parse(item);
-                    digitalContext.IdpUserInRoles.Add(userinRole);
+                    _context.SysUserInRoles.Add(userinRole);
                 }
             }
             if (rolesRPT != null && rolesRPT.Count > 0)
             {
                 foreach (string item in rolesRPT)
                 {
-                    IdpUserInRole userinRole = new IdpUserInRole();
+                    SysUserInRole userinRole = new SysUserInRole();
                     userinRole.UserId = user.UserId;
                     userinRole.RoleId = int.Parse(item);
-                    digitalContext.IdpUserInRoles.Add(userinRole);
+                    _context.SysUserInRoles.Add(userinRole);
                 }
             }
             if ((roleThirdparty != null && roleThirdparty.Count > 0) || companyId != "IDP")
             {
                 foreach (string item in roleThirdparty)
                 {
-                    IdpUserInRole userinRole = new IdpUserInRole();
+                    SysUserInRole userinRole = new SysUserInRole();
                     userinRole.UserId = user.UserId;
                     userinRole.RoleId = int.Parse(item);
-                    digitalContext.IdpUserInRoles.Add(userinRole);
+                    _context.SysUserInRoles.Add(userinRole);
                 }
             }
-            var trancodeNotification = await digitalContext.IdpNotificationTemplates.Where(x => x.TransactionCode == "ADDNEW_USER_TELLER").FirstOrDefaultAsync();
-            /// laod config temp email, sms
-            string interServiceName = string.Empty;
-            string channelId = (string)context.GetVariable(VariableKey.ChannelId);
-            string link = string.Empty;
-            string imgTop = string.Empty;
-            string imgleft = string.Empty;
-            string imgRight = string.Empty;
-            string imgBGR = string.Empty;
-            switch (AppConfig.GetString("Idp:System:SubServiceName"))
-            {
-                case "SYS":
-                    interServiceName = "Sys";
-                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
-                    break;
-                case "WEP":
-                    interServiceName = "Wep";
-                    channelId = "IB";
-                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
-                    break;
-                case "MOP":
-                    interServiceName = "Mop";
-                    channelId = "MB";
-                    link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_MB")).VarValue;
-                    break;
-            }
-            imgTop = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_TOP_TEMPLATE")).Value;
-            imgleft = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_LEFT_TEMPLATE")).Value;
-            imgRight = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_RIGHT_TEMPLATE")).Value;
-            imgBGR = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_BACKGROUND")).Value;
-            string website = (await IdpCaching.GetObjectAsync("Sys_Variables", "WEBSITE")).Value;
-            string hotline = (await IdpCaching.GetObjectAsync("Sys_Variables", "HOTLINE")).Value;
-            sendInfo sendIf = new sendInfo();
-            var lstSendInfo = new List<sendInfo>();
-            string langid = (string)context.GetVariable(VariableKey.Lang);
-            var infoSms = new sendInfo();
-            var infoEmail = new sendInfo();
-            //  JObject jobjEmail = new JObject();
-            JObject jobjEmail = new JObject(
-                          new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
-                          new JProperty("Password", password),
-                          new JProperty("PasswordTemp", string.IsNullOrEmpty(user.Birthday.Value.ToString()) ? "" : user.Birthday.Value.ToString("ddMMyyyy")),
-                          new JProperty("ImgBGR", imgBGR),
-                          new JProperty("ImgTop", imgTop),
-                          new JProperty("Imgleft", imgleft),
-                          new JProperty("ImgRight", imgRight),
-                          new JProperty("Website", website),
-                          new JProperty("Hotline", hotline)
-                      );
-            JObject jobjSms = new JObject(
-                          new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
-                          new JProperty("Password", password)
-                      );
-            if (autoGenPass == true)
-            {
-                switch (typesend.ToLower())
-                {
-                    case "sms":
-                        if (string.IsNullOrEmpty(user.PhoneNo)) throw new IdpException("phonenotnull", "Phone no is not null");
-                        infoSms.to = user.PhoneNo;
-                        infoSms.tranCode = "ADDNEW_USER_TELLER";
-                        infoSms.tempParam = "SENDER";
-                        infoSms.lang = langid;
-                        infoSms.inputParam = jobjSms;
-                        infoSms.typeSend = "sms";
-                        lstSendInfo.Add(infoSms);
-                        break;
-                    case "email":
-                        if (string.IsNullOrEmpty(user.Email)) throw new IdpException("emailnotnull", "Email is not null");
-                        infoEmail.to = user.Email;
-                        infoEmail.tranCode = "ADDNEW_USER_TELLER";
-                        infoEmail.tempParam = "SENDER";
-                        infoEmail.lang = langid;
-                        infoEmail.inputParam = jobjEmail;
-                        infoEmail.typeSend = "email";
-                        lstSendInfo.Add(infoEmail);
-                        break;
-                    case "all":
-                        if (string.IsNullOrEmpty(user.PhoneNo)) throw new IdpException("phonenotnull", "Phone no is not null");
-                        infoSms.to = user.PhoneNo;
-                        infoSms.tranCode = "ADDNEW_USER_TELLER";
-                        infoSms.tempParam = "SENDER";
-                        infoSms.lang = langid;
-                        infoSms.inputParam = jobjSms;
-                        infoSms.typeSend = "sms";
-                        lstSendInfo.Add(infoSms);
-                        if (string.IsNullOrEmpty(user.Email)) throw new IdpException("emailnotnull", "Email is not null");
-                        infoEmail.to = user.Email;
-                        infoEmail.tranCode = "ADDNEW_USER_TELLER";
-                        infoEmail.tempParam = "SENDER";
-                        infoEmail.lang = langid;
-                        infoEmail.inputParam = jobjEmail;
-                        infoEmail.typeSend = "email";
-                        lstSendInfo.Add(infoEmail);
-                        break;
-                    default:
-                        throw new IdpException("typesendnotnull", "Type send password is not null", "");
-                        break;
-                }
-            }
-            await digitalContext.SaveChangesAsync();
-            context.SetVariable(VariableKey.UserId, user.UserId);
+            //var trancodeNotification = await _context.IdpNotificationTemplates.Where(x => x.TransactionCode == "ADDNEW_USER_TELLER").FirstOrDefaultAsync();
+            ///// laod config temp email, sms
+            //string interServiceName = string.Empty;
+            //string channelId = (string)context.GetVariable(VariableKey.ChannelId);
+            //string link = string.Empty;
+            //string imgTop = string.Empty;
+            //string imgleft = string.Empty;
+            //string imgRight = string.Empty;
+            //string imgBGR = string.Empty;
+            //switch (AppConfig.GetString("Idp:System:SubServiceName"))
+            //{
+            //    case "SYS":
+            //        interServiceName = "Sys";
+            //        link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
+            //        break;
+            //    case "WEP":
+            //        interServiceName = "Wep";
+            //        channelId = "IB";
+            //        link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_IB")).VarValue;
+            //        break;
+            //    case "MOP":
+            //        interServiceName = "Mop";
+            //        channelId = "MB";
+            //        link = (await IdpCaching.GetObjectAsync("Idp_Configration", "Img_Url_Static_MB")).VarValue;
+            //        break;
+            //}
+            //imgTop = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_TOP_TEMPLATE")).Value;
+            //imgleft = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_LEFT_TEMPLATE")).Value;
+            //imgRight = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_RIGHT_TEMPLATE")).Value;
+            //imgBGR = link + (await IdpCaching.GetObjectAsync("Sys_Variables", "IMG_BACKGROUND")).Value;
+            //string website = (await IdpCaching.GetObjectAsync("Sys_Variables", "WEBSITE")).Value;
+            //string hotline = (await IdpCaching.GetObjectAsync("Sys_Variables", "HOTLINE")).Value;
+            //sendInfo sendIf = new sendInfo();
+            var lstSendInfo = new List<string>();
+            //string langid = (string)context.GetVariable(VariableKey.Lang);
+            //var infoSms = new sendInfo();
+            //var infoEmail = new sendInfo();
+            ////  JObject jobjEmail = new JObject();
+            //JObject jobjEmail = new JObject(
+            //              new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
+            //              new JProperty("Password", password),
+            //              new JProperty("PasswordTemp", string.IsNullOrEmpty(user.Birthday.Value.ToString()) ? "" : user.Birthday.Value.ToString("ddMMyyyy")),
+            //              new JProperty("ImgBGR", imgBGR),
+            //              new JProperty("ImgTop", imgTop),
+            //              new JProperty("Imgleft", imgleft),
+            //              new JProperty("ImgRight", imgRight),
+            //              new JProperty("Website", website),
+            //              new JProperty("Hotline", hotline)
+            //          );
+            //JObject jobjSms = new JObject(
+            //              new JProperty("Fullname", user.FullName != null ? user.FullName : user.LastName),
+            //              new JProperty("Password", password)
+            //          );
+            //if (autoGenPass == true)
+            //{
+            //    switch (typesend.ToLower())
+            //    {
+            //        case "sms":
+            //            if (string.IsNullOrEmpty(user.PhoneNo)) throw new SysException("phonenotnull", "Phone no is not null");
+            //            infoSms.to = user.PhoneNo;
+            //            infoSms.tranCode = "ADDNEW_USER_TELLER";
+            //            infoSms.tempParam = "SENDER";
+            //            infoSms.lang = langid;
+            //            infoSms.inputParam = jobjSms;
+            //            infoSms.typeSend = "sms";
+            //            lstSendInfo.Add(infoSms);
+            //            break;
+            //        case "email":
+            //            if (string.IsNullOrEmpty(user.Email)) throw new SysException("emailnotnull", "Email is not null");
+            //            infoEmail.to = user.Email;
+            //            infoEmail.tranCode = "ADDNEW_USER_TELLER";
+            //            infoEmail.tempParam = "SENDER";
+            //            infoEmail.lang = langid;
+            //            infoEmail.inputParam = jobjEmail;
+            //            infoEmail.typeSend = "email";
+            //            lstSendInfo.Add(infoEmail);
+            //            break;
+            //        case "all":
+            //            if (string.IsNullOrEmpty(user.PhoneNo)) throw new SysException("phonenotnull", "Phone no is not null");
+            //            infoSms.to = user.PhoneNo;
+            //            infoSms.tranCode = "ADDNEW_USER_TELLER";
+            //            infoSms.tempParam = "SENDER";
+            //            infoSms.lang = langid;
+            //            infoSms.inputParam = jobjSms;
+            //            infoSms.typeSend = "sms";
+            //            lstSendInfo.Add(infoSms);
+            //            if (string.IsNullOrEmpty(user.Email)) throw new SysException("emailnotnull", "Email is not null");
+            //            infoEmail.to = user.Email;
+            //            infoEmail.tranCode = "ADDNEW_USER_TELLER";
+            //            infoEmail.tempParam = "SENDER";
+            //            infoEmail.lang = langid;
+            //            infoEmail.inputParam = jobjEmail;
+            //            infoEmail.typeSend = "email";
+            //            lstSendInfo.Add(infoEmail);
+            //            break;
+            //        default:
+            //            throw new SysException("typesendnotnull", "Type send password is not null", "");
+            //            break;
+            //    }
+            //}
+            //await _context.SaveChangesAsync();
+            //context.SetVariable(VariableKey.UserId, user.UserId);
             return lstSendInfo;
         }
         public async ValueTask<object> DeleteUser(dynamic userIds)
