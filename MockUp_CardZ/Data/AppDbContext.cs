@@ -23,6 +23,7 @@ namespace MockUp_CardZ.Data
         public DbSet<SysService> SysServices { get; set; }
         public DbSet<SysLoginHistory> SysLoginHistories { get; set; }
         public DbSet<SysUserAccessToken> SysUserAccessTokens { get; set; }
+        public DbSet<ApiEncryptionType> ApiEncryptionTypes { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
@@ -31,6 +32,9 @@ namespace MockUp_CardZ.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<ApiEncryptionType>()
+                .HasKey(s => s.EncryptId);
+
             modelBuilder.Entity<SysPolicy>()
                 .HasKey(p => new { p.PolicyId, p.ServiceId });
 
